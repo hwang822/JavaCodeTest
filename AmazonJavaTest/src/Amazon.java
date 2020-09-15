@@ -6,7 +6,6 @@ public class Amazon {
     //https://www.geeksforgeeks.org/printing-brackets-matrix-chain-multiplication-problem/
     //1-1. Printing brackets in Matrix Chain Multiplication Problem
 
-
     // Driver code
     static void matrixChainOrderTest()
     {
@@ -15,7 +14,6 @@ public class Amazon {
 
         matrixChainOrder(arr, n);
     }
-
 
     static void printParenthesis(int i, int j, int n,
                           int[][] bracket, char name)
@@ -989,8 +987,94 @@ public class Amazon {
         LinkNode(int d) {data = d; next = null; }
     }
 
+    //2020-9-14  Amazon codeing test
     //4-1 find find top 2 strings using at statements.
     static void findTop2StringsUsedInStatements() {
+
+        int topFeatures = 2;
+        List<String> possibleFeatures = new ArrayList<String>();
+        possibleFeatures.add("anacell");
+        possibleFeatures.add("betacellular");
+        possibleFeatures.add("cetracular");
+        possibleFeatures.add("deltacellular");
+        possibleFeatures.add("eurocell");
+
+        //test case 1
+        List<String> featureRequests = new ArrayList<String>();
+        featureRequests.add("I love anacell Best services provided by anacell in the town");
+        featureRequests.add("betacellular has great services");
+        featureRequests.add("deltacellular provides much better services than betacellular");
+        featureRequests.add("cetracular is worse than eurocell");
+        featureRequests.add("betacellular is better than deltacellular");   //ret {"deltacellular", "betacellular"}
+        List<String>  ret = topFeatureRequests(topFeatures, possibleFeatures, featureRequests);
+
+        //test case 2
+        featureRequests.add("Best services provided by anacell");
+        featureRequests.add("betacellular has great services");
+        featureRequests.add("anacell provides much better services than all other");  //ret {"anacell", "services"}
+        ret = topFeatureRequests(topFeatures, possibleFeatures, featureRequests);
+
+
+    }
+
+    public static List<String> topFeatureRequests(int topFeatures, List<String> possibleFeatures, List<String> featureRequests) {
+        // Write your code here
+        int max1 = Integer.MIN_VALUE;
+        int max2 = Integer.MIN_VALUE;
+
+        String maxStr1 = "";
+        String maxStr2 = "";
+
+        HashMap<String, Integer> mapRequest =  new HashMap<String, Integer>();
+
+        List<String> ret = new ArrayList<String>();
+
+        for(int j = 0; j < featureRequests.size(); j++ ){
+            String str = featureRequests.get(j);
+            String[] strList = str.split(" ");
+            for(int m = 0; m < strList.length; m++){
+                String featurStr =  strList[m];
+                if(mapRequest.containsKey(featurStr)){
+                    int count = mapRequest.get(featurStr);
+                    mapRequest.put(featurStr, ++count);
+                }
+                else {
+                    mapRequest.put(featurStr, 1);
+                }
+
+            }
+
+        }
+
+        for(int i = 0; i < possibleFeatures.size(); i++ ){
+            String possibleStr = possibleFeatures.get(i);
+            if(mapRequest.containsKey(possibleStr)){
+                int freq = mapRequest.get(possibleStr);
+
+                if(freq>=max1){
+                    max2 = max1;
+                    max1 = freq;
+                    maxStr2 = maxStr1;
+                    maxStr1 = possibleStr;
+                }
+                else {
+                    if(freq>=max2){
+                        max2 = freq;
+                        maxStr2 = possibleStr;
+                    }
+                }
+            }
+
+        }
+
+        ret.add(maxStr1);
+        ret.add(maxStr2);
+
+        return ret;
+    }
+
+    //4-2 find two integer in BST of integer array distance.
+    static void findTwoNodesDistanceInBST() {
         // build a BST tree for integer list  {4, 3, 5, 2, 1}
         // find tree node1 and node 2 distance.
         List<Integer> valuses = new ArrayList<>();
@@ -1000,27 +1084,9 @@ public class Amazon {
         valuses.add(2);
         valuses.add(1);
         int ret = foo(valuses, 2, 5);
+
     }
 
-    public static int fooUtil(List<Integer> values, int node1, int node2, int left, int right) {
-        int mid = (right-left)/2;
-        int leftLevel = 0;
-        int rightLevel = 0;
-        if (mid == 0)
-            return 0;
-        int root = values.get(mid);
-        if((node1<=root)&&(node2<=root)){
-            left = 0;
-            right = mid;
-            leftLevel = 1 + fooUtil(values, node1, node2, left, right);
-        }
-        else if((node1>=root)&&(node2>=root)){
-            left = mid;
-            right = values.size();
-            rightLevel = 1 + fooUtil(values, node1, node2, left, right);
-        }
-        return rightLevel + leftLevel;
-    }
 
     static class TreeNode{
         TreeNode left;
@@ -1038,17 +1104,7 @@ public class Amazon {
 
     }
 
-    public static TreeNode arraytoBinary(int [] array, int start, int end) {
-        if (start > end){
-            return null;
-        }
-        int mid = (start + end) / 2;
-        TreeNode node = new TreeNode(array[mid]);
-        node.left = arraytoBinary(array, start, mid - 1);
-        node.right = arraytoBinary(array, mid + 1, end);
-        return node;
-    }
-
+    // build BST from integer array
     static public TreeNode buildTree(int[] a){
         TreeNode parent= new TreeNode();
         TreeNode curr= new TreeNode();
@@ -1078,6 +1134,7 @@ public class Amazon {
         }
         return root;
     }
+
 
     static int distanceFromRoot(TreeNode root, int x)
     {
@@ -1112,97 +1169,6 @@ public class Amazon {
         int[] array = values.stream().mapToInt(i->i).toArray();
         TreeNode root = buildTree(array); // arraytoBinary(array, 0, values.size()-1);
         int ret = distanceBetween2(root, node1, node2);
-        return ret;
-    }
-
-
-    //4-2 find two integer in BST of integer array distance.
-    static void findTwoNodesDistanceInBST() {
-        int topFeatures = 2;
-        List<String> possibleFeatures = new ArrayList<String>();
-        possibleFeatures.add("anacell");
-        possibleFeatures.add("betacellular");
-        possibleFeatures.add("cetracular");
-        possibleFeatures.add("deltacellular");
-        possibleFeatures.add("eurocell");
-
-        //test case 1
-        List<String> featureRequests = new ArrayList<String>();
-        featureRequests.add("I love anacell Best services provided by anacell in the town");
-        featureRequests.add("betacellular has great services");
-        featureRequests.add("deltacellular provides much better services than betacellular");
-        featureRequests.add("cetracular is worse than eurocell");
-        featureRequests.add("betacellular is better than deltacellular");   //ret {"deltacellular", "betacellular"}
-        List<String>  ret = topFeatureRequests(topFeatures, possibleFeatures, featureRequests);
-
-        //test case 2
-        featureRequests.add("Best services provided by anacell");
-        featureRequests.add("betacellular has great services");
-        featureRequests.add("anacell provides much better services than all other");  //ret {"anacell", "services"}
-        ret = topFeatureRequests(topFeatures, possibleFeatures, featureRequests);
-
-    }
-
-    public static List<String> topFeatureRequests(int topFeatures, List<String> possibleFeatures, List<String> featureRequests) {
-        // Write your code here
-        int max1 = Integer.MIN_VALUE;
-        int max2 = Integer.MIN_VALUE;
-
-        String maxStr1 = "";
-        String maxStr2 = "";
-
-        HashMap<String, Integer> mapPossible =  new HashMap<String, Integer>();
-        HashMap<String, Integer> mapRequest =  new HashMap<String, Integer>();
-        HashMap<String, Integer> mapFreq =  new HashMap<String, Integer>();
-
-        List<String> ret = new ArrayList<String>();
-
-        for(int j = 0; j < featureRequests.size(); j++ ){
-            String str = featureRequests.get(j);
-            String[] strList = str.split(" ");
-            for(int m = 0; m < strList.length; m++){
-                String featurStr =  strList[m];
-                if(mapRequest.containsKey(featurStr)){
-                    int count = mapRequest.get(featurStr);
-                    mapRequest.put(featurStr, ++count);
-                }
-                else {
-                    mapRequest.put(featurStr, 1);
-                }
-
-            }
-
-        }
-
-        for(int i = 0; i < possibleFeatures.size(); i++ ){
-            String possibleStr = possibleFeatures.get(i);
-            if(mapRequest.containsKey(possibleStr)){
-                int count = mapRequest.get(possibleStr);
-                mapFreq.put(possibleStr, ++count);
-            }
-            else
-                mapFreq.put(possibleStr, 1);
-        }
-
-        for(String freqStr : mapFreq.keySet()){
-
-            int freq = mapFreq.get(freqStr);
-            if(freq>=max1){
-                max2 = max1;
-                max1 = freq;
-                maxStr2 = maxStr1;
-                maxStr1 = freqStr;
-            }
-            else {
-                if(freq>=max2){
-                    max2 = freq;
-                    maxStr2 = freqStr;
-                }
-            }
-        }
-        ret.add(maxStr1);
-        ret.add(maxStr2);
-
         return ret;
     }
 
