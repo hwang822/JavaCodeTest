@@ -363,6 +363,14 @@ System.out.printf("\n10. Graphs");
         //10-6 Matrix //矩阵  锡安王国的城市之间通过双向道路相连， 每条道路都需要花费大量时间才能摧毁，一次只能修整一条。 给定边沿和时间列表，请确定停止攻击的最短时间。
         HackerRank.minTimeRoadTest(); //Solved
 
+        //https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
+        //10-7 Depth First Search or DFS for a Graph
+        HackerRank.dfsTest();
+
+        //https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
+        //10-8 Breadth First Search or BFS for a Graph
+        HackerRank.bfsTest();
+
 
 https://www.hackerrank.com/interview/interview-preparation-kit/trees/challenges
 // 11. Trees
@@ -700,6 +708,40 @@ System.out.printf("\n14. Miscellaneous");
         //4-2 find two integer in BST of integer array distance.
         Amazon.findTwoNodesDistanceInBST();
 
+        //https://www.youtube.com/watch?v=5co5Gvp_-S0
+        //4-3 find first Non Repeating Charcter from a string
+        Amazon.firstNonRepeatingCharcterTest();
+
+        //https://www.youtube.com/watch?v=5o-kdjv7FD0
+        //4-4 N steps, take one or two step for how many ways from bottom to top
+        Amazon.num_ways_X_bottom_up_Test();
+
+        //https://www.youtube.com/watch?v=q2v5nik5vwU
+        //4-5 Most Common Word
+        Amazon.CommonWordTest();
+
+        //https://www.youtube.com/watch?v=il_t1WVLNxk&list=PLqM7alHXFySGqCvcwfqqMrteqWukz9ZoE
+        //4-6-a. Given a Binary tree, how will you find the vertical Sum of Binary Tree?
+        //4-6-b. Given a Binary tree, how will you find the maximum width?
+        //4-6-c. N students in a calss paly a game against each other where each student plays
+        //       against all other students int eh class. find the total number of matches to be conducted.
+        Amazon.findVerticalMaxSumOfBSTTest();
+
+        //https://www.youtube.com/watch?v=7lbwfkCfNQ4
+        //4-7 Given two binary trees, determine whether they have the same inorder traversal.
+        Amazon.twoBSTtraversalTest();
+
+        //https://www.youtube.com/watch?v=4Zq2Fnd6tl0&list=PLtQWXpf5JNGJagakc_kBtOH5-gd8btjEW
+        //4-8 uniques path for left-top to right-bottom in grid (nxm).
+        Amazon.uniquesPathOfGrid_nxm_Test();
+
+        //https://www.youtube.com/watch?v=eaYX0Ee0Kcg
+        //4-9 find k Smallest items (points with closer x-y points to [0,0]).
+        Amazon.findKSmallestItemsTest();
+
+        //https://www.youtube.com/watch?v=kHWy5nEfRIQ
+        //4-10 Tower Hopper Problem.
+        Amazon.towerHopperProblemTest();
 
     }
 

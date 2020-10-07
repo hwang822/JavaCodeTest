@@ -2495,6 +2495,151 @@ long maxSum(vector<long> a, long m) {
         return result;
     }
 
+    //https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
+    //10-7 Depth First Search or DFS for a Graph
+    static void dfsTest(){
+        //Input:
+        //2                 // tow test cases                                  3
+        //5 4               // number of nodes 5 and number of edges 4         |
+        //0 1 0 2 0 3 2 4   // edges 0-1, 0-2, 0-3, 2-4                      1-0-2-4
+        //4 3               // number of nodes 4 and number of edges 3
+        //0 1 1 2 0 3       // edges 0-1, 1-2, 0-3                           0-1-2
+                            //                                               |
+                            //                                               3
+
+
+        int[][] edges1 = {{0,1},{0,2},{0,3},{2,4}};
+        int index1 = edges1.length-1;
+        int[] ret = deepFirstSeraching(index1, edges1);
+        int[][] edges2 = {{0,1},{1,2},{0,3}};
+        int index2 = edges2.length-1;
+        ret = deepFirstSeraching(index2, edges2);
+
+        ArrayList<ArrayList<Integer>> list2 = new ArrayList<ArrayList<Integer>>();
+
+        for(int i=0; i<edges1.length; i++){
+            ArrayList<Integer> list1 = new ArrayList<Integer>();
+            list1.add(edges1[i][0]);
+            list1.add(edges1[i][1]);
+            list2.add(list1);
+        }
+        int N = 5;  // {0, 1, 2, 3, 4}
+
+        ArrayList<Integer> retList = dfs(list2, N);
+
+    }
+
+    static ArrayList<Integer> dfs(ArrayList<ArrayList<Integer>> g, int N){
+        int n = g.size()-1;
+        HashMap<Integer, Boolean> visted = new HashMap<Integer, Boolean>();
+        int[][] edges = new int[g.size()][2];
+        for(int i = 0; i < g.size(); i++){
+            ArrayList<Integer> temp = g.get(i);
+            edges[i][0] = temp.get(0);
+            edges[i][1] = temp.get(1);
+        }
+        visted = deepFirstSerachingUtil(n, edges, visted);
+
+        ArrayList<Integer> ret = new ArrayList<Integer>();
+
+        for(int key : visted.keySet()){
+            ret.add(key);
+        }
+
+        return ret;
+    }
+
+
+    static int[] deepFirstSeraching(int index, int[][] edges){
+        int[] ret = new int[index+1];
+        HashMap<Integer, Boolean> visted = new HashMap<Integer, Boolean>();
+        visted = deepFirstSerachingUtil(index, edges, visted);
+
+        //visted = new HashMap<Integer, Boolean>();
+        //visted = deepFirstSerachingUtil(index, edges, visted);
+        return ret;
+    }
+
+    static HashMap<Integer, Boolean> deepFirstSerachingUtil(int index, int[][] edges, HashMap<Integer, Boolean> visted){
+        if(index<0)
+            return visted;
+        int node = edges[index][0];
+        if(!visted.containsKey(node))
+            visted.put(node, true);
+        node = edges[index][1];
+        if(!visted.containsKey(node)){
+            visted.put(node, true);
+        }
+        return deepFirstSerachingUtil(--index, edges, visted);
+    }
+
+    //https://www.geeksforgeeks.org/depth-first-search-or-dfs-for-a-graph/
+    //10-8 Breadth First Search or BFS for a Graph
+    static void bfsTest(){
+
+        Graph g = new Graph(4);
+        g.addEdge(0, 1);
+        g.addEdge(0, 2);
+        g.addEdge(1, 2);
+        g.addEdge(2, 0);
+        g.addEdge(2, 3);
+        g.addEdge(3, 3);
+        System.out.println("Following is Breadth First Traversal "+
+                "(starting from vertex 2)");
+
+        g.BFS(2);
+    }
+
+    static class Graph {
+        private int V;   // No. of vertices
+        private LinkedList<Integer> adj[]; //Adjacency Lists
+
+        // Constructor
+        Graph(int v) {
+            V = v;
+            adj = new LinkedList[v];
+            for (int i = 0; i < v; ++i)
+                adj[i] = new LinkedList();
+        }
+
+        // Function to add an edge into the graph
+        void addEdge(int v, int w) {
+            adj[v].add(w);
+        }
+
+        // prints BFS traversal from a given source s
+        void BFS(int s) {
+            // Mark all the vertices as not visited(By default
+            // set as false)
+            boolean visited[] = new boolean[V];
+
+            // Create a queue for BFS
+            LinkedList<Integer> queue = new LinkedList<Integer>();
+
+            // Mark the current node as visited and enqueue it
+            visited[s] = true;
+            queue.add(s);
+
+            while (queue.size() != 0) {
+                // Dequeue a vertex from queue and print it
+                s = queue.poll();
+                System.out.print(s + " ");
+
+                // Get all adjacent vertices of the dequeued vertex s
+                // If a adjacent has not been visited, then mark it
+                // visited and enqueue it
+                Iterator<Integer> i = adj[s].listIterator();
+                while (i.hasNext()) {
+                    int n = i.next();
+                    if (!visited[n]) {
+                        visited[n] = true;
+                        queue.add(n);
+                    }
+                }
+            }
+        }
+    }
+
     // 11. Trees
 
     // Tree

@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.*;
 
 public class Amazon {
@@ -1105,17 +1106,16 @@ public class Amazon {
     }
 
     // build BST from integer array
-    static public TreeNode buildTree(int[] a){
-        TreeNode parent= new TreeNode();
-        TreeNode curr= new TreeNode();
-        curr.key=a[0];
-        TreeNode root=curr;
+    static public Node buildTree(int[] a){
+        Node parent= new Node(a[0]);
+        Node curr= new Node(a[0]);
+        Node root=curr;
         int v;
         for(int i=1;i<a.length;i++){
             curr=root;
             v=a[i];
             while(curr!=null){
-                if(v>=curr.key) {
+                if(v>=curr.data) {
                     parent=curr;
                     curr=curr.right;
                 }else{
@@ -1124,42 +1124,40 @@ public class Amazon {
                 }
             }
             //parent is leaf
-            if(v>=parent.key){
-                parent.right= new TreeNode();
-                parent.right.key=v;
+            if(v>=parent.data){
+                parent.right= new Node(v);
             }else{
-                parent.left=new TreeNode();
-                parent.left.key=v;
+                parent.left=new Node(v);
             }
         }
         return root;
     }
 
 
-    static int distanceFromRoot(TreeNode root, int x)
+    static int distanceFromRoot(Node root, int x)
     {
-        if (root.key == x)
+        if (root.data == x)
             return 0;
-        else if (root.key > x)
+        else if (root.data > x)
             return 1 + distanceFromRoot(root.left, x);
         return 1 + distanceFromRoot(root.right, x);
     }
-    static int distanceBetween2(TreeNode root, int a, int b)
+    static int distanceBetween2(Node root, int a, int b)
     {
         if (root == null)
             return 0;
 
         // Both keys lie in left
-        if (root.key > a && root.key > b)
+        if (root.data > a && root.data > b)
             return distanceBetween2(root.left, a, b);
 
         // Both keys lie in right
-        if (root.key < a && root.key < b) // same path
+        if (root.data < a && root.data < b) // same path
             return distanceBetween2(root.right, a, b);
 
         // Lie in opposite directions (Root is
         // LCA of two nodes)
-        if (root.key >= a && root.key <= b)
+        if (root.data >= a && root.data <= b)
             return distanceFromRoot(root, a) + distanceFromRoot(root, b);
 
         return -1;
@@ -1167,9 +1165,309 @@ public class Amazon {
 
     public static int foo(List<Integer> values, int node1, int node2) {
         int[] array = values.stream().mapToInt(i->i).toArray();
-        TreeNode root = buildTree(array); // arraytoBinary(array, 0, values.size()-1);
+        Node root = buildTree(array); // arraytoBinary(array, 0, values.size()-1);
         int ret = distanceBetween2(root, node1, node2);
         return ret;
+    }
+
+    //https://www.youtube.com/watch?v=5co5Gvp_-S0
+    //4-3 firstNonRepeatingCharcter
+    static void firstNonRepeatingCharcterTest() {
+        String str = "aaabcccdeeef";  // ret 'b'
+        char ret = firstNonRepeatingCharcter(str);
+        ret = firstNonRepeatingCharcter1(str);
+    }
+
+    static char firstNonRepeatingCharcter(String str){
+        char ret = '_';
+        HashMap<Character,Integer> map = new HashMap<Character,Integer>();
+        for(int i = 0; i < str.length(); i++){
+            char chr = str.charAt(i);
+            int count = 1;
+            if(map.containsKey(chr)){
+                count = map.get(chr);
+                count++;
+            }
+            map.put(chr, count);
+        }
+
+        for(int i = 0; i < str.length(); i++){
+            char chr = str.charAt(i);
+            if(map.containsKey(chr)) {
+                int count = map.get(chr);
+                if(count==1)
+                    return chr;
+            }
+        }
+
+        return ret;
+    }
+
+    static char firstNonRepeatingCharcter1(String str) {
+        char ret = '_';
+        for (int i = 0; i < str.length(); i++) {
+
+            if(str.indexOf(str.charAt(i))==str.lastIndexOf(str.charAt(i)))
+                return str.charAt(i);
+        }
+        return ret;
+    }
+
+
+    //https://www.youtube.com/watch?v=5o-kdjv7FD0
+    //4-4 N steps, take one or two step for how many ways from bottom to top
+    static void num_ways_X_bottom_up_Test(){
+        int n = 3;
+        int[] steps = {1, 3, 5};
+        int ret = num_ways_X_bottom_up(n, steps);
+    }
+
+    static int num_ways_X_bottom_up(int n, int[] steps) {
+        if(n==0) return 1;
+        int[] nums = new int[steps.length+1];
+        nums[0] = 1;
+        for(int i=1; i<=n; i++){
+            int total = 0;
+            for(int j=1; j<steps.length; j++) {
+                if ((i - j) >= 0) {
+                    total += nums[i - j];
+                }
+                nums[i] = total;
+            }
+        }
+        return nums[n];
+    }
+
+    //https://www.youtube.com/watch?v=q2v5nik5vwU
+    //4-5 Most Common Word
+    static void CommonWordTest(){
+        String porograph = "Bob hit a ball, the hit BALL flew far after it was hit.";
+        String[] banned = {"hit"};
+        String ret = CommonWord(porograph, banned);
+    }
+
+    static String CommonWord(String porograph, String[] banned){
+
+        HashSet<String> bannedWords = new HashSet<>();
+        for(String word : banned){
+            bannedWords.add(word.toLowerCase());
+        }
+
+        HashMap<String, Integer> counts = new HashMap<String, Integer>();
+        for(String word : porograph.split(" ")){
+            String wordlow = word.toLowerCase();
+            wordlow = wordlow.replace(",", "");
+            wordlow = wordlow.replace(".","");
+            if(!bannedWords.contains(wordlow)){
+                counts.put(wordlow, counts.getOrDefault(wordlow, 0) + 1);
+            }
+        }
+
+        String result = "";
+        for(String key : counts.keySet()){
+            if (result.equals("") || counts.get(key) > counts.get(result)) {
+                result = key;
+            }
+        }
+        return result;
+    }
+
+    //https://www.youtube.com/watch?v=il_t1WVLNxk&list=PLqM7alHXFySGqCvcwfqqMrteqWukz9ZoE
+    //4-6-a Given a Binary tree, how will you find the vertical Sum of Binary Tree?
+    static void findVerticalMaxSumOfBSTTest(){
+    //          1
+    //     2        3
+    //  4      5 7      6
+    //  only mid vertical line 1, 5, 7 sum = 1
+        Node root = new Node(1);
+        root.left = new Node(2);
+        root.right = new Node(3);
+        root.left.left = new Node(4);
+        root.left.right = new Node(5);
+        root.right.left = new Node(7);
+        root.right.right = new Node(9);
+        //4-6-a Given a Binary tree, how will you find the vertical Sum of Binary Tree?
+        int ret = findVerticalSumOfBST(root);
+        //4-6-b. Given a Binary tree, how will you find the maximum width?
+        ret = findMixWidthOfBST(root);
+        //4-6-c. N students in a calss paly a game against each other where each student plays
+        //       against all other students int eh class. find the total number of matches to be conducted.
+
+        int[] students = {1, 2, 3, 4, 5};  // select any student as root to build a tree. for every student to lost the root one student will put to left, other wise put to right
+        playGames(students);
+
+    }
+
+    static void findVerticalSumOfBST(Node root, HashMap<Integer, Integer> map, int key) {
+        if(root == null){
+            return;
+        }
+        map.put(key, map.getOrDefault(key, 0) + root.data);
+        if(root.left!=null){
+            findVerticalSumOfBST(root.left, map, key-1);
+        }
+        if(root.right!=null){
+            findVerticalSumOfBST(root.right, map, key+1);
+        }
+
+    }
+
+    static int findVerticalSumOfBST(Node root){
+        int sum = Integer.MIN_VALUE;
+
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();  //key is node index and vlaue is sum of same node key
+        findVerticalSumOfBST(root, map, 0);
+        for(int i : map.values()){
+            if(i > sum)
+                sum = i;
+
+        }
+        return sum;
+
+    }
+
+    static int findMixWidthOfBST(Node root){
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+
+        HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();  //key is node index and vlaue is sum of same node key
+        findVerticalSumOfBST(root, map, 0);
+        for(int i : map.keySet()){
+            if(i > max)
+                max = i;
+            if(i < min)
+                min = i;
+
+        }
+        return Math.abs(max-min);
+
+    }
+
+    static void playGames(int[] students){
+        Node root = buildTree(students);
+        treeTraversal(root);
+        return;
+    }
+
+    //https://www.youtube.com/watch?v=7lbwfkCfNQ4
+    //4-7 Given two binary trees, determine whether they have the same inorder traversal.
+    static void twoBSTtraversalTest(){
+        TreeNode root1 = new TreeNode(5);
+        root1.left = new TreeNode(3);
+        root1.right = new TreeNode(7);
+        root1.left.left = new TreeNode(1);
+        root1.right.left = new TreeNode(6);
+
+        TreeNode root2 = new TreeNode(3);
+        root2.left = new TreeNode(1);
+        root2.right = new TreeNode(6);
+        root2.right.left = new TreeNode(5);
+        root2.right.right = new TreeNode(7);  //ret true
+
+        boolean ret = twoBSTtraversal(root1, root2);
+    }
+
+    static void inorderTravel(TreeNode root, List<Integer> list) {
+        if (root == null) return;
+        inorderTravel(root.left, list);
+        list.add(root.key);
+        inorderTravel(root.right, list);
+        return;
+    }
+
+    static boolean twoBSTtraversal(TreeNode root1, TreeNode root2){
+
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        inorderTravel(root1, list1);
+        inorderTravel(root2, list2);
+
+        return list1.equals(list2);
+
+    }
+
+    //https://www.youtube.com/watch?v=4Zq2Fnd6tl0&list=PLtQWXpf5JNGJagakc_kBtOH5-gd8btjEW
+    //4-8 uniques path for left-top to right-bottom in grid (nxm).
+    static void uniquesPathOfGrid_nxm_Test(){
+        int ret = uniquesPathOfGrid_nxm(4, 6);  //ret 56
+        ret = uniquesPathOfGrid_nxm(3, 4);  //ret 10
+    }
+
+    static int uniquesPathOfGrid_nxm(int n, int m){
+        //agorithm go first row or column, paths number always 1, the others would be paths[i][j] = paths[i-1][j] + paths[i][j-1]
+       int[][] paths = new int[n][m];
+       for(int i=0; i<n; i++) {
+           for (int j = 0; j < m; j++) {
+                if((i==0)||(j==0)){
+                    paths[i][j]=1;
+                }
+                else {
+                    paths[i][j] = paths[i-1][j] + paths[i][j-1];
+                }
+           }
+       }
+       return paths[n-1][m-1];
+    }
+
+    //https://www.youtube.com/watch?v=eaYX0Ee0Kcg
+    //4-9 find k Smallest items (points with closer x-y points to [0,0]).
+    static void findKSmallestItemsTest(){
+        int[][] points = {{-2, 4}, {0, -2}, {-1, 0}, {2, 5}, {-2, -3}, {3, 2}};
+        // dist             20        4         1       29      13        13    //ret {1, 2, 4}
+        int k = 3;
+        int ret[] = findKSmallestItems(points, k);
+    }
+
+    static int[] findKSmallestItems(int[][] points, int k){
+        // using a heap (smallest heap) to keep tracking of smallest distance from a array
+        int smallestDist = 0;
+        int[] group = new int[k]; // the [k] always keep smallest dist index
+        for(int i = 0; i < points.length; i++){
+            int dist = points[i][0]*points[i][0] + points[i][1]*points[i][1];
+            if(i<k){
+                if(i==0){
+                    group[i] = i;
+                    smallestDist = dist;
+                }
+                else{
+                    if(dist<smallestDist){
+                        group[i] = group[i-1];
+                        group[i-1] = i;
+                    }
+                    else {
+                        group[i] = i;
+                        smallestDist = dist;
+                    }
+                }
+            }
+            else {
+                if(dist<smallestDist){
+                    group[k-1] = i;
+                    smallestDist = dist;
+                }
+            }
+        }
+        return group;
+    }
+
+    //https://www.youtube.com/watch?v=kHWy5nEfRIQ
+    //4-10 Tower Hopper Problem.
+    static void towerHopperProblemTest(){
+        //jump tower high array
+        //jump max k
+        //if possible from highest tower to ground after last tower.
+        //using DFS, BFS to search pump path
+
+        int k = 4;
+        int[] tower = {4, 2, 0, 0, 2, 0};
+        boolean ret  = towerHopperProblem(tower, k);
+        int[] tower1 = {1, 3, 5, 3, 1, 0};
+    }
+
+    static boolean towerHopperProblem(int[] tower, int k){
+
+        return true;
     }
 
 }
