@@ -126,7 +126,7 @@ System.out.printf("\n1. Warm-up Challenges");
         // 1-2 Counting Valleys  找出 +1， -1 in array {U，D，D，D，U，D，U，U} ， cross 0 times.
         HackerRank.countingValleysTest(); //Solved
 
-        //https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
+        //https://www.hackerrank.com/challenges/jumping-on-the-cloudsC/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
         //1-3 Jumping on the Clouds  找出 2 或 3 连续 0 或 1 in {0， 0， 0， 0， 1， 0}
         HackerRank.jumpingOnCloudsTest();  //Solved
 

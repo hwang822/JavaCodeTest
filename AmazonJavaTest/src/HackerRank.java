@@ -6,7 +6,7 @@ import java.util.*;
 public class HackerRank {
 
     //https://www.hackerrank.com/interview/interview-preparation-kit/warmup/challenges
-    //1. Warm-up Challenges
+    //1. Warm-up ChallengesFF
 
     //https://www.hackerrank.com/challenges/sock-merchant/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
     //1-1 Sock Merchant
@@ -105,12 +105,25 @@ public class HackerRank {
     // Complete the jumpingOnClouds function below.
 
     static int jumpingOnClouds(int[] c) {
-        int count = 0;
-        for (int i = 0; i < c.length - 1; i++) {
-            if (c[i] == 0) i++;  //no, could jump 1 or 2
-            count++;   // count in cloud`
+        int stps = 0;
+        for(int i = 0; i < c.length-1; i++){
+            if((c[i]==0)&&(c[i+1]==0)){
+                stps++;
+                i++;
+            }
+            else if((c[i]==0)&&(c[i+1]==1)){
+                stps++;
+                i++;
+            }
+            else if((c[i]==1)&&(c[i+1]==0)){
+                stps++;
+            }
+            else if((c[i]==1)&&(c[i+1]==1)){
+                i++;
+            }
         }
-        return count;
+        return stps;
+
     }
 
     //https://www.hackerrank.com/challenges/repeated-string/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
@@ -777,19 +790,60 @@ public class HackerRank {
 
     static int activityNotifications(int[] expenditure, int d) {
 
-        int[] midArray = new int[d];
+        int notificationCount = 0;
 
-        int iCount = 0;
-        for (int i = d; i < expenditure.length; i++) {
-            System.arraycopy(expenditure, i - d, midArray, 0, d);
-            Arrays.sort(midArray);
-            int mid = midArray[d / 2];
-            if (expenditure[i] >= mid * 2)
-                iCount++;
+        int[] data = new int[201];
+        for (int i = 0; i < d; i++) {
+            data[expenditure[i]]++;
         }
-        return iCount;
+
+        for (int i = d; i < expenditure.length; i++) {
+
+            double median = getMedian(d, data);
+
+            if (expenditure[i] >= 2 * median) {
+                notificationCount++;
+
+            }
+
+            data[expenditure[i]]++;
+            data[expenditure[i - d]]--;
+
+        }
+
+        return notificationCount;
+
     }
 
+    private static double getMedian(int d, int[] data) {
+        double median = 0;
+        if (d % 2 == 0) {
+            Integer m1 = null;
+            Integer m2 = null;
+            int count = 0;
+            for (int j = 0; j < data.length; j++) {
+                count += data[j];
+                if (m1 == null && count >= d/2) {
+                    m1 = j;
+                }
+                if (m2 == null && count >= d/2 + 1) {
+                    m2 = j;
+                    break;
+                }
+            }
+            median = (m1 + m2) / 2.0;
+        } else {
+            int count = 0;
+            for (int j = 0; j < data.length; j++) {
+                count += data[j];
+                if (count > d/2) {
+                    median = j;
+                    break;
+                }
+            }
+        }
+        return median;
+    }
 /*
 vector<string> split_string(string);
 
