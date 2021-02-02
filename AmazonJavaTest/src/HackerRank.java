@@ -657,7 +657,6 @@ public class HackerRank {
     static List<Integer> freqQuery(List<List<Integer>> queries) {
         Map<Integer, Integer> dataArray = new HashMap();
         List<Integer> ret = new ArrayList<Integer>();
-        Map<Integer, Integer> freq = new HashMap();
 
         for (List<Integer> ops : queries) {
             int op = ops.get(0);
@@ -1176,46 +1175,26 @@ int activityNotifications(vector<int> A, int d) {
     static void commonChildTest() {
         String a = "HARRY";
         String b = "SALLY";
-        LCS = new int[a.length()][a.length()];
-        compute(a, b, 0, a.length() - 1, 0, a.length() - 1);
-
+        //LCS = new int[a.length()][a.length()];
+        //compute(a, b, 0, a.length() - 1, 0, a.length() - 1);
+        int rt = commonChild(a, b); //rt 2
+        rt = commonChild("SHINCHAN", "NOHARAAA"); //rt 3
     }
 
-    class StringComparator implements Comparator<String> {
-        public int compare(String a, String b) {
-            if (a.length() > b.length())
-                return -1;
-            else if (a.length() < b.length())
-                return 1;
-            return 0;
+    static int commonChild(String a, String b){
+        int[][] C = new int[a.length()+1][b.length()+1];
 
-        }
-    }
-
-    public static int[][] LCS;
-
-    public static int Max(int a, int b) {
-        return (a > b) ? a : b;
-    }
-
-    public static int compute(String a, String b, int start, int end, int s2, int end2) {
-        if (start > end || s2 > end2) {
-            return 0;
-        } else {
-            if (a.charAt(start) == b.charAt(s2)) {
-                if (LCS[start][s2] == 0)
-                    return LCS[start][s2] = (1 + compute(a, b, start + 1, end, s2 + 1, end2));
-                else
-                    return LCS[start][s2];
-            } else {
-                if (LCS[start][s2] == 0)
-                    return LCS[start][s2] = Max(compute(a, b, start + 1, end, s2, end2), compute(a, b, start, end, s2 + 1, end2));
-                else
-                    return LCS[start][s2];
-
+        for (int i = 0; i < a.length(); i++) {
+            for (int j = 0; j < b.length(); j++) {
+                if (a.charAt(i) == b.charAt(j)) {
+                    C[i+1][j+1] = C[i][j] + 1;
+                } else {
+                    C[i+1][j+1] = Math.max(C[i+1][j], C[i][j+1]);
+                }
             }
         }
 
+        return C[a.length()][b.length()];
     }
 
     //https://www.hackerrank.com/challenges/minimum-absolute-difference-in-an-array/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=greedy-algorithms

@@ -108,15 +108,18 @@ Recursion： 递归，设方程初始输入值， 再调用方程输入递减至
 
 
 public class Solution { // total 50 solved
-//https://www.hackerrank.com/interview/interview-preparation-kit
-//The HackerRank Interview Preparation Kit
     public static void main(String[] args) {
 
-        //https://www.hackerrank.com/interview/interview-preparation-kit/warmup/challenges
+//HackerRank codes
+//https://www.hackerrank.com/interview/interview-preparation-kit
+
+//The HackerRank Interview Preparation Kit
+// https://www.hackerrank.com/interview/interview-preparation-kit/warmup/challenges
 
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 // 1. Warm-up Challenges
-System.out.printf("\n1. Warm-up Challenges");
+        System.out.printf("\n1. Warm-up Challenges");
 
         //https://www.hackerrank.com/challenges/sock-merchant/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
         //1-1 Sock Merchant   找出配对数in array {10, 20, 20, 10, 10, 30, 50, 10, 20}, put all integer at Hashmap with integer as key and counts as value, then sum even count.
@@ -372,7 +375,7 @@ System.out.printf("\n10. Graphs");
         HackerRank.bfsTest();
 
 
-https://www.hackerrank.com/interview/interview-preparation-kit/trees/challenges
+//https://www.hackerrank.com/interview/interview-preparation-kit/trees/challenges
 // 11. Trees
 System.out.printf("\n11. Trees");
 
@@ -545,10 +548,8 @@ System.out.printf("\n14. Miscellaneous");
 //3-10. Detect Loop in linked list              \\检测链表中的循环
 
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
-
-
-        //Amazon
-        //https://www.geeksforgeeks.org/amazon-interview-preparation/
+//Amazon
+//https://www.geeksforgeeks.org/amazon-interview-preparation/
 
         //Popular Articles
 
@@ -743,6 +744,11 @@ System.out.printf("\n14. Miscellaneous");
         //4-10 Tower Hopper Problem.
         Amazon.towerHopperProblemTest();
 
+//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+//Other interview codes test.
+        //indeed using karat.
+        Amazon.findRectangleTest();
     }
+
 
 }

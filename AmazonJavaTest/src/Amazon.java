@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.io.*;
 import java.util.*;
 
 public class Amazon {
@@ -1469,5 +1470,266 @@ public class Amazon {
 
         return true;
     }
+
+    //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    //other interview code test
+    //
+    //
+
+    static class ShareData {
+        long time;
+        long maxTimeGap;
+        long volume;
+        long weightedAveragePrice;
+        long maxPrice;
+
+        public ShareData(long time, long volume, long price){
+            this.maxTimeGap = 0;
+            this.time = time;
+            this.volume = volume;
+            this.weightedAveragePrice = price*volume;
+            this.maxPrice = price;
+        }
+
+        public void upDate(long time, long volume, long price){
+            if((time-this.time)>this.maxTimeGap)
+                this.maxTimeGap = time-this.time;
+            this.time = time;
+            this.volume += volume;
+            this.weightedAveragePrice += price*volume;
+            if(price>this.maxPrice)
+                this.maxPrice = price;
+        }
+
+    }
+
+    static void cvsReadWriteTest() throws IOException {
+        HashMap<String, ShareData> tradeMap = new HashMap<>();
+
+        BufferedReader csvReader = new BufferedReader(new FileReader("c:\\input.csv"));
+        String row = "";
+        while ((row = csvReader.readLine()) != null) {
+            String[] data = row.split(",");
+            String symbol = data[1];
+            long time = Long.parseLong(data[0]);
+            long volume = Integer.parseInt(data[2]);
+            long price = Integer.parseInt(data[3]);
+
+
+            if(tradeMap.containsKey(symbol)){
+                ShareData tradedata  = tradeMap.get(symbol);
+                tradedata.upDate(time, volume, price);
+                tradeMap.put(symbol,tradedata);
+            }
+            else{
+                ShareData tradedata = new ShareData(time, volume, price);
+                tradeMap.put(symbol,tradedata);
+            }
+
+        }
+        csvReader.close();
+
+        TreeMap<String, ShareData> sorted = new TreeMap<>();
+
+        // Copy all data from hashMap into TreeMap
+        sorted.putAll(tradeMap);
+
+        PrintWriter cvsWriter = new PrintWriter(new File("c:\\workarea\\output.csv"));
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Map.Entry<String, ShareData> entry : sorted.entrySet()){
+            String symbol = entry.getKey();
+            ShareData tradedata  = entry.getValue();
+
+            sb.append(symbol);
+            sb.append(',');
+            sb.append(Long.toString(tradedata.maxTimeGap));
+            sb.append(',');
+            sb.append(Long.toString(tradedata.volume));
+            sb.append(',');
+            sb.append(Long.toString(tradedata.weightedAveragePrice/tradedata.volume));
+            sb.append(',');
+            sb.append(Long.toString(tradedata.maxPrice));
+            sb.append(',');
+            sb.append('\n');
+
+        }
+        cvsWriter.write(sb.toString());
+        cvsWriter.close();
+
+    }
+
+//Indeed interview code test
+/*
+    Imagine we have an image. We'll represent this image as a simple 2D array where every pixel is a 1 or a 0. The image you get is known to have a single rectangle of 0s on a background of 1s.
+    Write a function that takes in the image and returns one of the following representations of the rectangle of 0's: top-left coordinate and bottom-right coordinate OR top-left coordinate, width, and height.
+
+    image1 = [
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 0, 0, 0, 1],
+            [1, 1, 1, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            ]
+
+    Sample output variations (only one is necessary):
+
+    findRectangle(image1) =>
+    x: 3, y: 2, width: 3, height: 2 == row: 2, column: 3, width: 3, height: 2
+            2,3 3,5 -- row,column of the top-left and bottom-right corners
+
+    Other test cases:
+
+    image2 = [
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 0],
+            ]
+
+    findRectangle(image2) =>
+    x: 6, y: 4, width: 1, height: 1
+            4,6 4,6
+
+    image3 = [
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 0, 0],
+            [1, 1, 1, 1, 1, 0, 0],
+            ]
+
+    findRectangle(image3) =>
+    x: 5, y: 3, width: 2, height: 2
+            3,5 4,6
+
+    image4 = [
+            [0, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1, 1, 1],
+            ]
+
+    findRectangle(image4) =>
+    x: 0, y: 0, width: 1, height: 1
+            0,0 0,0
+
+    image5 = [
+            [0],
+            ]
+
+    findRectangle(image5) =>
+    x: 0, y: 0, width: 1, height: 1
+            0,0 0,0
+
+    n: number of rows in the input image
+    m: number of columns in the input image
+
+
+*/
+//Imagine we have an image. We'll represent this image as a simple 2D array where every pixel is a 1 or a 0. The image you get is known to have a single rectangle of 0s on a background of 1s.
+//Write a function that takes in the image and returns one of the following representations of the rectangle of 0's: top-left coordinate and bottom-right coordinate OR top-left coordinate, width, and height.
+
+    static void findRectangleTest(){
+        int[][] image1 = {
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 0, 0, 0, 1},
+                {1, 1, 1, 0, 0, 0, 1},
+                {1, 1, 1, 1, 1, 1, 1}
+        };
+        findRectangle(image1);
+//        Sample output variations (only one is necessary):
+//        findRectangle(image1) =>
+//        x: 3, y: 2, width: 3, height: 2 == row: 2, column: 3, width: 3, height: 2
+//        2,3 3,5 -- row,column of the top-left and bottom-right corners
+
+
+        int[][] image2 = {
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 0}
+        };
+        findRectangle(image2);
+
+//        findRectangle(image2) =>
+//        x: 6, y: 4, width: 1, height: 1
+//        4,6 4,6
+
+        int[][] image3 = {
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 0, 0},
+                {1, 1, 1, 1, 1, 0, 0}
+        };
+        findRectangle(image3);
+
+//        findRectangle(image3) =>
+//        x: 5, y: 3, width: 2, height: 2
+//        3,5 4,6
+
+        int[][] image4 = {
+                {0, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1},
+                {1, 1, 1, 1, 1, 1, 1}
+        };
+        findRectangle(image4);
+
+//        findRectangle(image4) =>
+//        x: 0, y: 0, width: 1, height: 1
+//        0,0 0,0
+
+        int[][] image5 = {
+                {0}
+        };
+        findRectangle(image5);
+
+//        findRectangle(image5) =>
+//        x: 0, y: 0, width: 1, height: 1
+//        0,0 0,0
+
+//        n: number of rows in the input image
+//        m: number of columns in the input image
+
+    }
+
+    static void findRectangle(int[][] image){
+        int top = image.length - 1;
+        int bottom = 0;
+        int left = image[0].length - 1;
+        int right = 0;
+
+        for (int i = 0; i < image.length; i++) {
+            for (int j = 0; j < image[i].length; j++) {
+                if (image[i][j] == 0) {
+                    if (i < top)
+                        top = i;
+                    if (i > bottom)
+                        bottom = i;
+
+                    if (j < left)
+                        left = j;
+                    if (j > right)
+                        right = j;
+                }
+            }
+        }
+        int[] range = {0, 0, 0, 0};
+        range[0] = left;
+        range[1] = top;
+        range[2] = right;
+        range[3] = bottom;
+        System.out.printf("%s %s %s %s\n", top, left, bottom, right);
+        return;
+    };
+
 
 }
