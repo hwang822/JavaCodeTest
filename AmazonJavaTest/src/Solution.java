@@ -749,7 +749,24 @@ System.out.printf("\n14. Miscellaneous");
         //indeed using karat.
         Amazon.tradeStreamTest();
         Amazon.findRectangleTest();
+
+        //facebook interview example. Find out avalage value of each leave nodes data in BST.
+        Amazon.findAvargeVlaueOfLeaveOfBSTTest();
+
+//#1 InorderTravelTree and GetNextNode
+// Facebook remote interviewer by zhouhui at 8/18/2017, 12PM CTS.
+
+//(a) Inorder (Left, Root, Right) : 4 2 5 1 3
+//(b) Preorder (Root, Left, Right) : 1 2 4 5 3
+//(c) Postorder (Left, Right, Root) : 4 5 2 3 1
+// Breadth First or Level Order Traversal : 1 2 3 4 5
+
+//             1
+//		     /   \
+//         2       3
+//        / \
+//      4    5
+//
+        Amazon.treeIndorderTravelofBSTTest();
     }
-
-
 }
