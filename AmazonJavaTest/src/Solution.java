@@ -751,7 +751,7 @@ System.out.printf("\n14. Miscellaneous");
         Amazon.findRectangleTest();
 
         //facebook interview example. Find out avalage value of each leave nodes data in BST.
-        Amazon.findAvargeVlaueOfLeaveOfBSTTest();
+        Facebook.findAvargeVlaueOfLeaveOfBSTTest();
 
 //#1 InorderTravelTree and GetNextNode
 // Facebook remote interviewer by zhouhui at 8/18/2017, 12PM CTS.
@@ -767,6 +767,8 @@ System.out.printf("\n14. Miscellaneous");
 //        / \
 //      4    5
 //
-        Amazon.treeIndorderTravelofBSTTest();
+        Facebook.treeIndorderTravelofBSTTest();
+
+        Facebook.sortedArraySquaresTest();
     }
 }
