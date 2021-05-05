@@ -27,7 +27,7 @@ each element of array A is an integer within the range [−1,000,000..1,000,000]
 */
 class Solution { // total 50 solved
     static public int task1(int[] A) {
-
+        int iMax = Integer.MIN_VALUE;
         // write your code in Java SE 8
         HashMap<Integer, Integer> map = new HashMap<Integer, Integer>();
         for (int i = 0; i < A.length; i++) {
@@ -36,17 +36,18 @@ class Solution { // total 50 solved
                 iCount = map.get(A[i]) + 1;
             }
             map.put(A[i], iCount);
-        }
-        int iMax = 0;
-        int iIndex = 0;
-        for (int val : map.values()) {
-            if ((iIndex == 0) || (iIndex == map.size() - 1)) {
-                if (val < 2)
-                    continue;
+            if(A[i] > iMax){
+                iMax = A[i];
             }
-            iMax = iMax + val;
+
         }
-        return iMax;
+        for (int i = 1; i <= iMax+1; i++) {
+            if (map.containsKey(i)==false) {
+                return i;
+            }
+
+        }
+        return 1;
     }
 
     class SolutionIter implements Iterable<Integer> {
@@ -132,10 +133,12 @@ class Solution { // total 50 solved
         int res2 = task1(A2);
         int[] A3 = {4, 4};
         int res3 = task1(A3);
+        int[] A4 = {-1, -3};
+        int res4 = task1(A4);
 
-//        task2();
+  //      task2();
     }
-/*
+
     static public int solution(int[] A) {
         // write your code in Java SE 8
         HashMap<Integer, Integer> map = new HashMap<>();
@@ -157,7 +160,7 @@ class Solution { // total 50 solved
     }
 
 
-
+/*
     public static void main(String[] args) throws IOException {
 
         int[] A = {1, 3, 6, 4, 1, 2};
@@ -170,5 +173,72 @@ class Solution { // total 50 solved
 
     }
 
- */
+    void main(String[] args) throws IOException
+    {
+        //task1();
+        //task2();
+    }
+
+    void task1() {
+        char N1 = ' ';
+        int N2 = 5;
+        int[] N3 =  {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        getList(N1, N2, N3);
+    }
+
+    String getList(char N1, int N2, int[] N3){
+        String list = String.valueOf (N1);
+        int i = 0;
+        while(++i<N2){
+            int total = N3[i] * 3;
+            if((total!=5)||(total!=11)||(total!=13))
+                list = list + split(total) + i;
+        }
+        return list;
+    }
+
+    String split(int N){
+        if(N%2!=0)
+            return "foo";
+        return "bar";
+    }
+*/
+    void task2(){
+        String[] wordsReader = {"Two", "households", "both", "alike", "in", "dignity", "Two", "Two", "both"};
+        HashMap<String, Integer> map = new HashMap<>();
+        String mostUsedWord = "";
+        int mostUsedWordTimes = 0;
+        List<String> wordsRemaid = new ArrayList<>();
+        for(String word : wordsReader){
+            int count = 1;
+            if(map.containsKey(word)){
+                count = map.get(word) + 1;
+            }
+            else{
+                Set<Character> cSet = new HashSet<>();
+                for(int i = 0; i < word.length(); i++){
+                    char ch = word.toUpperCase().charAt(i);
+                    if((ch=='R') || (ch=='S') || (ch=='T') || (ch=='L') || (ch=='N') || (ch==' ') ||
+                            (ch=='A') || (ch=='E') || (ch=='I') || (ch=='O') || (ch=='U'))
+                        continue;
+                    cSet.add(ch);
+                }
+                if(cSet.size()>1){
+                    wordsRemaid.add(word);
+                }
+            }
+            map.put(word, count);
+
+            if(count>mostUsedWordTimes) {
+                mostUsedWordTimes = count;
+                mostUsedWord = word;
+            }
+        }
+
+        System.out.printf("Ramaid Wrods: %s, Most Used Word: %s, Most Used Word Times: %s",
+                wordsRemaid.toArray(), mostUsedWord, mostUsedWordTimes);
+        return;
+
+    }
+
 }

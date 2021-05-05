@@ -750,25 +750,122 @@ System.out.printf("\n14. Miscellaneous");
         Amazon.tradeStreamTest();
         Amazon.findRectangleTest();
 
-        //facebook interview example. Find out avalage value of each leave nodes data in BST.
-        Facebook.findAvargeVlaueOfLeaveOfBSTTest();
+//////////////////////////////////////////////////
 
-//#1 InorderTravelTree and GetNextNode
-// Facebook remote interviewer by zhouhui at 8/18/2017, 12PM CTS.
+//****************************************
+//https://www.educative.io/blog/cracking-top-facebook-coding-interview-questions
+//https://www.codinginterview.com/facebook-interview-questions
 
-//(a) Inorder (Left, Root, Right) : 4 2 5 1 3
-//(b) Preorder (Root, Left, Right) : 1 2 4 5 3
-//(c) Postorder (Left, Right, Root) : 4 5 2 3 1
-// Breadth First or Level Order Traversal : 1 2 3 4 5
+            //Arrays
+            //1. Given an integer array, move all elements that are equal to 0 to the left while maintaining the order of other elements in the array
+            //Move zeros to the left
+            Facebook.MoveZerosLeft_test(); //good
+            //2: Merge overlapping intervals
+            Facebook.merge_overlapping_intervals_test();
+            //21. Rotate a matrix (arrays)
+            Facebook.rotate_a_matrix_test();
+            //32. Find all unique triplets in an array, giving sum of zero (array)
+            Facebook.find_all_unique_triplets_in_an_array_test();
+            //35. Write a function to compute intersection of arrays (sort/search)
+            Facebook.compute_intersection_of_arrays_test();
+            //38. Group anagrams together in an array of strings (arrays/strings)
+            Facebook.group_anagrams_together_in_an_array_of_strings_test();
 
-//             1
-//		     /   \
-//         2       3
-//        / \
-//      4    5
-//
-        Facebook.treeIndorderTravelofBSTTest();
+            Facebook.sortedArraySquaresTest();
+            Facebook.findLongestSubarrayBySubTest();
+            Facebook.conPartitionTest();
+            Facebook.findTwoNumbersSumInArrayEqualTargetValueTest();
 
-        Facebook.sortedArraySquaresTest();
+            //linked lists
+            //3. Add two integers
+            Facebook.add_two_integers_test();
+            //4. Merge two sorted linked lists
+            Facebook.merge_two_sorted_linked_lists();
+            //18. Add two numbers as a list (lists)
+            Facebook.add_two_numbers_as_a_list_test();
+            Facebook.addTwoLinksTest();
+
+            //trees
+            //5. Convert binary tree to doubly linked
+            Facebook.Convert_binary_tree_to_doubly_linked_test();
+            //6. Trees: Level order traversal of binary tree
+            //13. Design: Serialize / deserialize binary tree
+            Facebook.serialize_deserialize_binary_tree_test();
+            Facebook.level_order_traversal_of_binary_tree_test();
+            //30. Find the least common ancestor (tree search)
+            Facebook.find_the_least_common_ancestor_test();
+            //31. Find largest distance between nodes in a tree (DFS)
+            Facebook.find_largest_distance_between_nodes_in_a_tree_test();
+            //33. Find maximum path sum in non-empty binary tree
+            Facebook.find_maximum_path_sum_in_non_empty_binary_tree_test();
+            //39. Convert a BST to sorted circular doubly linked list (trees)
+            Facebook.convert_a_BST_to_sorted_circular_doubly_linked_list_test();
+            //40. Determine the order of letters in a dictionary (graphs/trees)
+            Facebook.determine_the_order_of_letters_in_a_dictionary_test();
+
+            //facebook interview example. Find out avalage value of each leave nodes data in BST.
+            Facebook.findAvargeVlaueOfLeaveOfBSTTest();
+            Facebook.treeIndorderTravelofBSTTest();
+
+            //strings
+            //7. Strings: Reverse words in a sentence
+            Facebook.reverse_words_in_a_sentence_test();
+            //8. Strings: String segmentation
+            Facebook.string_segmetatio_test();
+            //26 Implement StrStr (string search)
+            Facebook.strStr_test();
+            //27 Minimum appends for Palindrome (strings) // string is same as string reverse  Malayal and Malayalam
+            Facebook.minimum_appends_for_Palindrome_test();
+
+            //9. Dynamic Programming: Find maximum single sell profit
+            Facebook.findBuySellStockPrices_test();
+            //16 Longest increasing subsequence from array of integers (dynamic programming arrays)
+
+            //17. Unique paths in a grid (dynamic programming matrices)
+            Facebook.unique_paths_in_a_grid_test(); //good
+
+            //Math
+            //10. Math and Stats: Calculate the power of a number
+            Facebook.calculate_the_power_of_a_number_test(); //good
+            //24. Find nth Fibonacci number (number theory)
+            Facebook.find_nth_Fibonacci_number_test(); //good
+            //25. Find the square root of an integer using binary search (math search answer)
+            Facebook.find_the_square_root_of_an_integer_using_binary_search_test(); //good
+
+            //11 Backtracking: Find all possible subsets
+            Facebook.get_all_subsets_test(); //no good
+
+            //Graphs
+            //12 Clone a directed graph
+            Facebook.clone_a_directed_graph(); //no good
+
+            //34. Find K closest points to origin for a list of points on a plane (search/sort)
+            Facebook.find_K_closest_points_to_origin_for_a_list_of_points_on_a_plane_test(); //good
+
+            //sorting and searching
+            //14 Search rotated array
+            Facebook.Search_rotated_array_test(); //good. frist seach rotatal board k, then search key in left or right.
+            //15  Sorting and Searching: Find the high and low index
+            //    //Given a sorted array of integers, return the low and high index of the given key>. You must return -1 if the indexes are not found.
+            Facebook.find_the_high_and_low_index_test(); //good. eaarch key bouard of k values of sub of array
+
+
+            //hash stack set
+            //28. Find the largest rectangle in a histogram (stacks)
+            Facebook.find_the_largest_rectangle_in_a_histogram_test(); //good check h[k]>h[k-1], start using all h[h-1] to find maxArea
+            //29. Substring concatenation (incremental hash)
+            Facebook.substring_concatenation_test(); // good.  scan sub strings to check if has all words
+
+        //////////////////////////////////
+
+            //System design
+            //19. Design cache (system design)
+            //20. Design a highly consistent database (system design)
+            //22. Design a URL shortener
+            //23. Design a recommendation system (ML, system design)
+            //36. Design a typehead feature (system design)
+            //37. Design Facebook Messenger (system design)
+        ////////////////////////////
+
     }
 }
