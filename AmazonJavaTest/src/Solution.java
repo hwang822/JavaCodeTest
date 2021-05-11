@@ -761,65 +761,68 @@ System.out.printf("\n14. Miscellaneous");
             //Move zeros to the left
             Facebook.MoveZerosLeft_test(); //good
             //2: Merge overlapping intervals
-            Facebook.merge_overlapping_intervals_test();
+            Facebook.merge_overlapping_intervals_test(); //good
             //21. Rotate a matrix (arrays)
-            Facebook.rotate_a_matrix_test();
+            Facebook.rotate_a_matrix_test(); //good
             //32. Find all unique triplets in an array, giving sum of zero (array)
-            Facebook.find_all_unique_triplets_in_an_array_test();
+            Facebook.find_all_unique_triplets_in_an_array_test();  //good,    //sort array, then compare sub range
             //35. Write a function to compute intersection of arrays (sort/search)
-            Facebook.compute_intersection_of_arrays_test();
-            //38. Group anagrams together in an array of strings (arrays/strings)
-            Facebook.group_anagrams_together_in_an_array_of_strings_test();
+            Facebook.compute_intersection_of_arrays_test(); //good,
+            // 38. Group anagrams together in an array of strings (arrays/strings)
+            Facebook.group_anagrams_together_in_an_array_of_strings_test();   //convert each string to sorted chrs string as map key ot group same key strings.
 
-            Facebook.sortedArraySquaresTest();
-            Facebook.findLongestSubarrayBySubTest();
-            Facebook.conPartitionTest();
-            Facebook.findTwoNumbersSumInArrayEqualTargetValueTest();
+
+            Facebook.sortedArraySquaresTest();  //good
+            Facebook.findLongestSubarrayBySumTest();  //good
+            Facebook.canPartitionTest();
+            Facebook.findTwoNumbersSumInArrayEqualTargetValueTest(); //good
 
             //linked lists
-            //3. Add two integers
-            Facebook.add_two_integers_test();
+            //3. Add two array integers
+            Facebook.add_two_integers_test();  //good
             //4. Merge two sorted linked lists
-            Facebook.merge_two_sorted_linked_lists();
+            Facebook.merge_two_sorted_linked_lists();  //good
             //18. Add two numbers as a list (lists)
-            Facebook.add_two_numbers_as_a_list_test();
-            Facebook.addTwoLinksTest();
+            Facebook.add_two_numbers_as_a_list_test(); //good, same Facebook.add_two_integers_test();
+            Facebook.addTwoLinksTest();  //good, same Facebook.add_two_integers_test();
 
             //trees
             //5. Convert binary tree to doubly linked
-            Facebook.Convert_binary_tree_to_doubly_linked_test();
+            Facebook.Convert_binary_tree_to_doubly_linked_test();   //good, first trave intern order to list. then trave list to create couble linked list.
             //6. Trees: Level order traversal of binary tree
+            Facebook.level_order_traversal_of_binary_tree_test();   //good, get each node childs and put list. reloop the list to get next leave childs nodes until go thouth all childs.
             //13. Design: Serialize / deserialize binary tree
-            Facebook.serialize_deserialize_binary_tree_test();
-            Facebook.level_order_traversal_of_binary_tree_test();
+            Facebook.serialize_deserialize_binary_tree_test();      //not good
             //30. Find the least common ancestor (tree search)
-            Facebook.find_the_least_common_ancestor_test();
+            Facebook.find_the_least_common_ancestor_test();         //good,   using root to compare v1 and v2
             //31. Find largest distance between nodes in a tree (DFS)
-            Facebook.find_largest_distance_between_nodes_in_a_tree_test();
+            Facebook.find_largest_distance_between_nodes_in_a_tree_test();    //good
             //33. Find maximum path sum in non-empty binary tree
-            Facebook.find_maximum_path_sum_in_non_empty_binary_tree_test();
+            Facebook.find_maximum_path_sum_in_non_empty_binary_tree_test();    //good,
             //39. Convert a BST to sorted circular doubly linked list (trees)
-            Facebook.convert_a_BST_to_sorted_circular_doubly_linked_list_test();
+            Facebook.convert_a_BST_to_sorted_circular_doubly_linked_list_test();   //good, same Facebook.Convert_binary_tree_to_doubly_linked_test()
             //40. Determine the order of letters in a dictionary (graphs/trees)
-            Facebook.determine_the_order_of_letters_in_a_dictionary_test();
+            Facebook.determine_the_order_of_letters_in_a_dictionary_test();     //good
 
             //facebook interview example. Find out avalage value of each leave nodes data in BST.
-            Facebook.findAvargeVlaueOfLeaveOfBSTTest();
-            Facebook.treeIndorderTravelofBSTTest();
+            Facebook.findAvargeValueOfLeaveOfBSTTest();   // good, same Facebook.level_order_traversal_of_binary_tree_test();
+            Facebook.treeIndorderTravelofBSTTest();       // good, same travel_Inorder_of_BST_test
 
             //strings
             //7. Strings: Reverse words in a sentence
-            Facebook.reverse_words_in_a_sentence_test();
+            Facebook.reverse_words_in_a_sentence_test(); //good.   "Hello World" => "World Hello"  splite  " " then reverse
             //8. Strings: String segmentation
-            Facebook.string_segmetatio_test();
+            Facebook.string_segmetatio_test();           //good.
             //26 Implement StrStr (string search)
-            Facebook.strStr_test();
+            Facebook.strStr_test();                     //good.           return str1.contains(str);
             //27 Minimum appends for Palindrome (strings) // string is same as string reverse  Malayal and Malayalam
-            Facebook.minimum_appends_for_Palindrome_test();
+            Facebook.minimum_appends_for_Palindrome_test();         //good
 
             //9. Dynamic Programming: Find maximum single sell profit
-            Facebook.findBuySellStockPrices_test();
+            Facebook.findBuySellStockPrices_test();   // not good, Given a list of daily stock prices (integers for simplicity), return the buy and sell prices for making the maximum profit.
+
             //16 Longest increasing subsequence from array of integers (dynamic programming arrays)
+            Facebook.longest_increasing_subsequence_from_array_of_integers_test(); //good.
 
             //17. Unique paths in a grid (dynamic programming matrices)
             Facebook.unique_paths_in_a_grid_test(); //good
@@ -833,11 +836,11 @@ System.out.printf("\n14. Miscellaneous");
             Facebook.find_the_square_root_of_an_integer_using_binary_search_test(); //good
 
             //11 Backtracking: Find all possible subsets
-            Facebook.get_all_subsets_test(); //no good
+            Facebook.get_all_subsets_test(); //not good
 
             //Graphs
             //12 Clone a directed graph
-            Facebook.clone_a_directed_graph(); //no good
+            Facebook.clone_a_directed_graph(); //not good
 
             //34. Find K closest points to origin for a list of points on a plane (search/sort)
             Facebook.find_K_closest_points_to_origin_for_a_list_of_points_on_a_plane_test(); //good
@@ -866,6 +869,16 @@ System.out.printf("\n14. Miscellaneous");
             //36. Design a typehead feature (system design)
             //37. Design Facebook Messenger (system design)
         ////////////////////////////
+
+        //5/10/2021 Facebook interview.
+
+            //1. Get Binary Search Tree max summary of leaves.
+            Facebook.get_binary_search_tree_max_summary_of_leaves_test();
+
+            //2. Check words if sorted as char array.
+            // String[] words = {"Check", "words", "if", "sorted"};
+            // char[] alph = {'c', 'w', 'i', 's'}
+            Facebook.check_words_if_sorted_as_char_array_test();
 
     }
 }

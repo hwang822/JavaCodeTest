@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.*;
 
 public class Facebook {
@@ -9,76 +10,51 @@ public class Facebook {
     //1. Given an integer array, move all elements that are equal to 0 to the left while maintaining the order of other elements in the array
     static void  MoveZerosLeft_test(){
         int arr[] = {1, 10, 20, 0, 59, 63, 0, 88, 0};
+        System.out.println(arr);
         MoveZerosLeft(arr);  //{0, 0, 0, 1, 10, 20, 59, 63, 88}
         System.out.println(arr);
     }
     static void MoveZerosLeft(int[] arr){
         int wrightIndex = 0;
         for(int i = 0; i<arr.length; i++){
-            int data = arr[arr.length-1-i];
-            if(data!=0){
-                if(i > wrightIndex){
+            int data = arr[arr.length-1-i]; //get each data from end to begin
+            if(data!=0){  //data is 0 not move data. go next move data
+                if(i > wrightIndex){   //if data != move this data to write location
                     arr[arr.length - 1 - wrightIndex] = data;
-                    arr[arr.length-1-i] = 0;
+                    arr[arr.length-1-i] = 0;  //read locatin fill zero.
                 }
-                wrightIndex++;
+                wrightIndex++;  //wirte next
             }
         }
     }
-
 
     //2: Merge overlapping intervals
     static void merge_overlapping_intervals_test(){
-        ArrayList<Pair> v = new ArrayList<Pair>();
-
-        v.add(new Pair(1, 5));
-        v.add(new Pair(3, 7));
-        v.add(new Pair(4, 6));
-        v.add(new Pair(6, 8));
-        v.add(new Pair(10, 12));
-        v.add(new Pair(11, 15));
-
-        ArrayList<Pair> result = mergeIntervals(v);
-
-        for(int i=0; i<result.size(); i++){
-            System.out.print(String.format("[%d, %d] ", result.get(i).first, result.get(i).second));
-        }
+        int[][] arrs = {{1,5},{3,7},{4,6},{6,8},{10,12},{11,15}};
+        List<int[]> list =  mergeIntervals(arrs); // list = {{1, 8},{10, 15}}
+        System.out.println(list.toArray()); //check each interval with result interval. if overlap change result interval
     }
+    static List<int[]> mergeIntervals(int[][] arrs) {
+        List<int[]> list = new ArrayList<>();
+        int[] intv = new int[2];
+        for(int[] newIntv : arrs){
+            if(intv[0]==intv[1]) {
+                intv = newIntv;
+                continue;
+            }
 
-    static class Pair{
-        public int first;
-        public int second;
-
-        public Pair(int x, int y){
-            this.first = x;
-            this.second = y;
-        }
-    }
-
-    static ArrayList<Pair> mergeIntervals(ArrayList<Pair> v) {
-
-        if(v == null || v.size() == 0) {
-            return null;
-        }
-
-        ArrayList<Pair> result = new ArrayList<Pair>();
-
-        result.add(new Pair(v.get(0).first, v.get(0).second));
-
-        for(int i = 1 ; i < v.size(); i++) {
-            int x1 = v.get(i).first;
-            int y1 = v.get(i).second;
-            int x2 = result.get(result.size() - 1).first;
-            int y2 = result.get(result.size() - 1).second;
-
-            if(y2 >= x1) {
-                result.get(result.size() - 1).second = Math.max(y1, y2);
-            } else {
-                result.add(new Pair(x1, y1));
+            if(intv[1] < newIntv[0]) { //no over lap
+                list.add(intv);
+                intv = newIntv;
+                continue;
+            }
+            else {
+                if(newIntv[1]>intv[1])
+                    intv[1] = newIntv[1];
             }
         }
-
-        return result;
+        list.add(intv);
+        return list;
     }
 
     //linked lists
@@ -92,153 +68,143 @@ public class Facebook {
         list2.next = new ListNode(3);
         list2.next.next = new ListNode(2);
         ListNode list3 = add_two_integers(list1,list2);
+        // 1->0->9->9 + 7->3->2 => 8->3->1->0->1
         System.out.println(list3);
     };
-
-    static ListNode add_two_integers(ListNode list1, ListNode list2){
-        ListNode result = null;
-        ListNode last = null;
-        int carry = 0;
-
-        while (
-            list1 != null ||
-            list2 != null ||
-            carry > 0) {
-
-            int first = (list1 == null ? 0 : list1.val);
-            int second = (list2 == null ? 0 : list2.val);
-            int sum = first + second + carry;
-            ListNode pNew = new ListNode(sum % 10);
-            carry = sum / 10;
-            if (result == null) {
-                result = pNew;
-            } else {
-                last.next = pNew;
-            }
-
-            last = pNew;
-            if (list1 != null) {
+    static ListNode add_two_integers(ListNode list1, ListNode list2) {
+        int carry= 0;
+        ListNode dummy = new ListNode(0);
+        ListNode prev = dummy;
+        while((list1!=null)||(list2!=null)||(carry!=0)){
+            int first = (list1==null)?0:list1.val;
+            int second = (list2==null)?0:list2.val;
+            int total = first + second + carry;
+            carry = total/10;
+            total = total- 10*carry;
+            prev.next = new ListNode(total);
+            prev = prev.next;
+            if(list1!=null)
                 list1 = list1.next;
-            }
-            if (list2 != null) {
+            if(list2!=null)
                 list2 = list2.next;
-            }
         }
-        return result;
+        return dummy.next;
     }
-
     //4. Merge two sorted linked lists
     static void merge_two_sorted_linked_lists(){
         ListNode head1 = new ListNode(4);
         head1.next = new ListNode(8);
         head1.next.next = new ListNode(15);
-        head1.next.next.next = new ListNode(19);
-        ListNode head2 = new ListNode(7);
-        head2.next = new ListNode(9);
+        head1.next.next.next = new ListNode(19);    //4->8->15->19
+        ListNode head2 = new ListNode(7);           //7->9->10->16
+        head2.next = new ListNode(9);     //merage: 4->7-8->9->10->15->16->19
         head2.next.next = new ListNode(10);
         head2.next.next.next = new ListNode(16);
         ListNode head3 =  merge_two_sorted_linked(head1, head2);
         System.out.println(head3);
     }
 
-    public static ListNode merge_two_sorted_linked(
-            ListNode head1,
-            ListNode head2) {
+    public static ListNode merge_two_sorted_linked(ListNode head1, ListNode head2) {
+        ListNode dumyList = new ListNode(0);
+        ListNode curr = dumyList;
+        List<ListNode> list = new ArrayList<>();
+        while((head1!=null)||(head2!=null)){
+            if((head1!=null)&&(head2!=null)){
+                if(head1.val<head2.val){
+                    curr.next = head1;
+                    if(head1!=null)
+                        head1 = head1.next;
+                }
+                else{
+                    curr.next = head2;
+                    if(head2!=null)
+                        head2 = head2.next;
 
-        // if both lists are empty then merged list is also empty
-        // if one of the lists is empty then other is the merged list
-        if (head1 == null) {
-            return head2;
-        } else if (head2 == null) {
-            return head1;
-        }
+                }
 
 
-        ListNode mergedHead = null;
-        if (head1.val <= head2.val) {
-            mergedHead = head1;
-            head1 = head1.next;
-        } else {
-            mergedHead = head2;
-            head2 = head2.next;
-        }
-
-        ListNode mergedTail = mergedHead;
-
-        while (head1 != null && head2 != null) {
-            ListNode temp = null;
-            if (head1.val <= head2.val) {
-                temp = head1;
-                head1 = head1.next;
-            } else {
-                temp = head2;
-                head2 = head2.next;
             }
-
-            mergedTail.next = temp;
-            mergedTail = temp;
+            else if(head1!=null){
+                curr.next = head1;
+                if(head1!=null)
+                    head1 = head1.next;
+            }
+            else if(head2!=null){
+                curr.next = head2;
+                if(head2!=null)
+                    head2 = head2.next;
+            }
+            curr = curr.next;
         }
-
-        if (head1 != null) {
-            mergedTail.next = head1;
-        } else if (head2 != null) {
-            mergedTail.next = head2;
-        }
-
-        return mergedHead;
+        return dumyList.next;
     }
 
     //5. Convert binary tree to doubly linked
-    static void Convert_binary_tree_to_doubly_linked_test(){
-        TreeNode root = new TreeNode(100);            //                      100
-        root.left = new TreeNode(50);                 //          50                  200
-        root.left.left = new TreeNode(25);            //    25           75       125      350
-        root.left.left.right = new TreeNode(30);      //       30     60
-        root.left.right = new TreeNode(75);
-        root.left.right.left = new TreeNode(60);
-        root.right = new TreeNode(200);
-        root.right.left = new TreeNode(125);
-        root.right.right = new TreeNode(350);
+    //  Each node in a doubly linked list has a predecessor and successor. For a circular doubly linked list, the predecessor of the first element is the last element, and the successor of the last element is the first element.
 
-        TreeNode header =  convert_binary_tree_to_doubly_linked(root);
-        //25 30 50 60 75 100 125 200 350
-
+    static void Convert_binary_tree_to_doubly_linked_test(){ //best search tree B
+        TreeNode root = new TreeNode(4);             //              4
+        root.left = new TreeNode(2);                 //           /     \
+        root.left.left = new TreeNode(1);            //        2          5
+        root.left.right = new TreeNode(3);           //     /     \
+        root.right = new TreeNode(5);                //  1          3
+                                                        // double linked list
+                                                        // head-> = 1 = 2 = 3 = 4 = 5 =
+                                                        //       ||                  ||
+                                                        //        =====================
+        TreeNode node = convert_binary_tree_to_doubly_linked(root);
+        System.out.println();
     }
 
-    static List<TreeNode> list = new ArrayList<>();
-    static void travelofBST(TreeNode root){
-        if(root==null)
-            return;
-        if(root.left!=null)
-            travelofBST(root.left);
-        System.out.printf("%s ", root.key);
-        list.add(root);
-        if(root.right!=null)
-            travelofBST(root.right);
-    };
-
-    static TreeNode convert_binary_tree_to_doubly_linked(TreeNode bst){
-        travelofBST(bst);
-        TreeNode header = null;
-        TreeNode next = null;
+    static TreeNode convert_binary_tree_to_doubly_linked(TreeNode root) {
+        if(root == null)
+            return null;
+        TreeNode dumyHead = new TreeNode(0);
+        TreeNode head = dumyHead, pre = dumyHead;
+        List<TreeNode> list = new ArrayList<>();
+        travel_Inorder_of_BST(root, list);
         for(TreeNode node : list){
-            if(header==null)
-                header = node;
-            else {
-                next.left = node;
-                node.right = next;
-            }
-            next = node;
+            head.right = node;
+            node.left = head;
+            head = node;
         }
-        return header;
+        head.right = dumyHead.right;   // make circular double linker
+        dumyHead.right.left = head;    //
+        return dumyHead.right;
     }
 
+    static void travel_Preorder_of_BST(TreeNode node, List<TreeNode> list) {
+        if(node==null)    // using internal trave: recurse tree root:  root.left -> root -> root.right
+            return;
+        list.add(node);
+        travel_Preorder_of_BST(node.left, list);
+        travel_Preorder_of_BST(node.right, list);
+        return;
+    }
+
+    static void travel_Inorder_of_BST(TreeNode node, List<TreeNode> list) {
+        if(node==null)    // using internal trave: recurse tree root:  root.left -> root -> root.right
+            return;
+        travel_Inorder_of_BST(node.left, list);
+        list.add(node);
+        travel_Inorder_of_BST(node.right, list);
+        return;
+    }
+
+    static void travel_Postorder_of_BST(TreeNode node, List<TreeNode> list) {
+        if(node==null)    // using internal trave: recurse tree root:  root.left -> root -> root.right
+            return;
+        travel_Postorder_of_BST(node.left, list);
+        list.add(node);
+        travel_Postorder_of_BST(node.right, list);
+        return;
+    }
 
     //6. Trees: Level order traversal of binary tree
     static void level_order_traversal_of_binary_tree_test(){
-        TreeNode root = new TreeNode(1);
-        root.left= new TreeNode(2);
-        root.right= new TreeNode(3);
+        TreeNode root = new TreeNode(1);         //              1
+        root.left= new TreeNode(2);              //       2            3
+        root.right= new TreeNode(3);             //   4       5
         root.left.left= new TreeNode(4);
         root.left.right= new TreeNode(5);
 
@@ -247,89 +213,67 @@ public class Facebook {
 
     }
 
-    //4. Trees: Level order traversal of binary tree
-
-    /* Compute the "height" of a tree -- the number of
-    nodes along the longest path from the root node
-    down to the farthest leaf node.*/
-    static int height(TreeNode root)
-    {
-        if (root == null)
-            return 0;
-        else
-        {
-            /* compute  height of each subtree */
-            int lheight = height(root.left);
-            int rheight = height(root.right);
-
-            /* use the larger one */
-            if (lheight > rheight)
-                return(lheight+1);
-            else return(rheight+1);
-        }
-    }
-
-    /* Print nodes at the given level */
-    static void printGivenLevel (TreeNode root ,int level)
-    {
-        if (root == null)
-            return;
-        if (level == 1)
-            System.out.print(root.key + " ");
-        else if (level > 1)
-        {
-            printGivenLevel(root.left, level-1);
-            printGivenLevel(root.right, level-1);
-        }
-    }
-
-    /* function to print level order traversal of tree*/
-
     static void level_order_traversal_of_binary_tree(TreeNode root) {
-        int h = height(root);
-        int i;
-        for (i = 1; i <= h; i++)
-            printGivenLevel(root, i);
+        List<TreeNode> list = new ArrayList<>();
+        list.add(root);
+        while (list.size()>0){
+            list  = travelGivenLevel(list);
+        }
+        System.out.println();
     }
 
+    static List<TreeNode> travelGivenLevel(List<TreeNode> list){
+        List<TreeNode> list1 = new ArrayList<>();
+        for(TreeNode node : list){
+            System.out.println(node.key);
+            if(node.left!=null)
+                list1.add(node.left);
+            if(node.right!=null)
+                list1.add(node.right);
+        }
+        return list1;
+    }
 
     //7. Strings: Reverse words in a sentence
     static void reverse_words_in_a_sentence_test(){
-        reverse_words_in_a_sentence("Hello World");  //"World Hello"
+        String str = reverse_words_in_a_sentence("Hello World !");  //"! World Hello"
+        System.out.println(str);    // splite  " " then reverse
     }
-    static void reverse_words_in_a_sentence(String str){
+    static String reverse_words_in_a_sentence(String str){
         String[] strWords = str.split(" ");
-
-        if(strWords.length==2){
-            System.out.println();
-            System.out.println(strWords[1] + " " + strWords[0]);
+        String strRet = "";
+        for(int i = 0; i < strWords.length; i++){
+            if(i==0)
+                strRet = strWords[strWords.length-1 - i];
+            else
+                strRet = strRet + " " + strWords[strWords.length-1 - i];
         }
+        return strRet;
     }
-
 
     //8. Strings: String segmentation
     static void string_segmetatio_test(){
-        String s = "hellonow";
+        String s = "hellonow";          //?? words char by char, seach new string in set, Recursion seach next paration
         Set <String> direcotry = new HashSet<>();
         direcotry.add("hello");
         direcotry.add("hell");
         direcotry.add("on");
         direcotry.add("now");
-
         string_segmetatio(s, direcotry);  //{"now", "Hello"}
-
     }
 
     static boolean string_segmetatio(String s, Set <String> dictionary){
         for (int i = 1; i <= s.length(); ++i) {
             String first = s.substring(0, i);
-            if (dictionary.contains(first)) {
-                String second = s.substring(i);
-
-                if (second == null || second.length() == 0 || dictionary.contains(second) || string_segmetatio(second, dictionary)) {
+            if (dictionary.contains(first)) {  //found new string in word collection
+                String second = s.substring(i);   // get other part of sentence
+                if (second == null || second.length() == 0) {  //other part sentence empy
                     return true;
                 }
-
+                if(dictionary.contains(second))    //other part of sentence contain word in words.
+                    return true;
+                if(string_segmetatio(second, dictionary)) //recuraton to find other part of sentence contain word in words.
+                    return true;
             }
         }
         return false;
@@ -338,25 +282,16 @@ public class Facebook {
     //9. Dynamic Programming: Find maximum single sell profit
     static void findBuySellStockPrices_test(){
         int[] prices = {8, 5, 12, 9, 19, 1};
-        findBuySellStockPrices(prices);
+        int[] result = findBuySellStockPrices(prices);
         int[] prices1 = {21, 12, 11, 9, 6, 3};
-        findBuySellStockPrices(prices1);
+        result = findBuySellStockPrices(prices1);
+        System.out.println(result);
     }
 
-    class Tuple<X, Y> {
-        public X x;
-        public Y y;
-
-        public Tuple(X x, Y y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
     public static int[] findBuySellStockPrices(int[] array) {
         if(array == null || array.length < 2) {
             return null;
         }
-
         int current_buy = array[0];
         int global_sell = array[1];
         int global_profit = global_sell - current_buy;
@@ -377,8 +312,6 @@ public class Facebook {
         }
 
         int[] result = {global_sell - global_profit, global_sell};
-        //Tuple<Integer, Integer> result =
-        //        new Tuple<Integer, Integer>(global_sell - global_profit, global_sell);
 
         return result;
     }
@@ -599,6 +532,7 @@ public class Facebook {
     }
 
     //13. Design: Serialize / deserialize binary tree
+
     static void serialize_deserialize_binary_tree_test(){
         TreeNode root = new TreeNode(1);        //              1
         root.left= new TreeNode(2);             //      2               3
@@ -606,36 +540,41 @@ public class Facebook {
         root.left.left= new TreeNode(4);        //
         root.left.right= new TreeNode(5);       //
 
-        serialize_deserialize_binary_tree(root);  // pre-travel: root->left->right
-                                                  // 1=>2->4->5->3
+        List<TreeNode> selist =serialize_deserialize_binary_tree(root);  // convert tree to double link tree (no circie)
+            // inorder travel: 4->2->5->1->3
+        //TreeNode deroot = deserialize_deserialize_binary_tree(selist);
+        System.out.println();
     }
 
-    static void serialize_deserialize_binary_tree(TreeNode root){
-        List<Integer> serialize_list = new ArrayList<>();
-        serialize_binary_tree(root, serialize_list);
-        TreeNode node = deserialize_binary_tree(serialize_list, null);
-        return;
+    static List<TreeNode> serialize_deserialize_binary_tree(TreeNode root) {
+        List<TreeNode> list = new ArrayList<>();
+        travel_Inorder_of_BST(root, list);
+        return list;
     }
 
-    static void serialize_binary_tree(TreeNode root, List<Integer> serialize_list){
-        if(root==null)
-            return;
-        serialize_list.add(root.key);
-        serialize_binary_tree(root.left, serialize_list);
-        serialize_binary_tree(root.right, serialize_list);
-        return;
-    }
-
-    static TreeNode deserialize_binary_tree(List<Integer> serialize_list, TreeNode root){
-        if(serialize_list.size()==0)
+    static TreeNode deserialize_deserialize_binary_tree(List<TreeNode> list) {
+        if(list==null)
             return null;
-        int key = serialize_list.remove(0);
-        root = new TreeNode(key);
-        deserialize_binary_tree(serialize_list, root.left);
-        deserialize_binary_tree(serialize_list, root.right);
-        return root;
-    };
 
+        TreeNode root = null;
+
+        for(TreeNode node : list){
+            if(root==null)
+                root = node;
+            else{
+                if(root.key==node.left.key){
+                    TreeNode temp = root;
+                    root = node;
+                    root.left = temp;
+                }
+                else{
+                    root.right = node;
+                }
+            }
+        }
+
+        return root;
+    }
 
     //sorting and searching
     //14 Search rotated Sorted array
@@ -772,6 +711,34 @@ public class Facebook {
 
 
     //16 Longest increasing subsequence from array of integers (dynamic programming arrays)
+    static void longest_increasing_subsequence_from_array_of_integers_test(){
+        int[] arr = {0,2,1,7,8,9,10,4};
+        int max = longest_increasing_subsequence_from_array_of_integers(arr);
+        System.out.println(max);
+    }
+    static int longest_increasing_subsequence_from_array_of_integers(int[] arr){
+        int iVal = 0;
+        int start = 0;
+        int sample = 0;
+        int maxLength = 0;
+        for(int i = 0; i < arr.length; i++){
+            if(i==0){
+                start = 0;
+            }
+            else{
+                if(arr[i] > sample){
+                    if((i-start)>maxLength)
+                        maxLength = i-start;
+                }
+                else{
+                    sample = arr[i];
+                    start = i;
+                }
+            }
+            sample = arr[i];
+        }
+        return maxLength;
+    }
 
     //17. Unique paths in a grid (dynamic programming matrices)
     static void unique_paths_in_a_grid_test(){
@@ -838,16 +805,18 @@ public class Facebook {
     //21. Rotate a matrix (arrays)
     static void rotate_a_matrix_test(){
         int[][] arrs1= {{1,2,3,4},{5,6,7,8},{9,10,11,12}};
-        int[][] arrs2= rotate_a_matrix(arrs1, 3, 4);
+        int[][] arrs2= rotate_a_matrix(arrs1, 3, 4); //{{12,11,10,9},{8,7,6,5},{4,3,2,1}};
+        System.out.println(arrs2);
     }
 
     static int[][] rotate_a_matrix(int[][] arrs, int m, int n){
+        int[][] result = new int[m][n]; //create new int[][] for convert result
         for(int x = 0; x<m; x++){
             for(int y = 0; y<n; y++){
-                arrs[x][y] = arrs[m-1-x][n-1-y];
+                result[x][y] = arrs[m-1-x][n-1-y];
             }
         }
-        return arrs;
+        return result;
     }
 
     //24. Find nth Fibonacci number (number theory)
@@ -896,16 +865,23 @@ public class Facebook {
 
     //26 Implement StrStr (string search)
     static void strStr_test(){
-        int index = strStr("Hello World", "Wo");
-        System.out.println(index);
+        String str1 = "Hello World";
+        String str = "Wo";
+        int istr = strStr1(str1, str);
+        boolean bstr = strStr(str1, str);
+        System.out.println(String.valueOf(istr) + " " + String.valueOf(bstr));
     };
 
-    static int strStr(String str1, String str2){
-        return str1.indexOf(str2);
+    static boolean strStr(String str1, String str){
+        return str1.contains(str);
+    }
+
+    static int strStr1(String str1, String str){
+        return str1.indexOf(str);
     }
 
     //27 Minimum appends for Palindrome (strings) // string is same as string reverse  Malayal and Malayalam
-    static void minimum_appends_for_Palindrome_test(){
+    static void minimum_appends_for_Palindrome_test(){  //"Malayal" => "Malayalam" =
         String str = minimum_appends_for_Palindrome("Malayal");
         System.out.println(str);
     }
@@ -1080,9 +1056,10 @@ public class Facebook {
 
         root.left.right = new TreeNode(4);
         root.left.right.left = new TreeNode(3);
-        root.left.right.right = new TreeNode(5);
+        root.left.right.right = new TreeNode(5);    //3, 5 least common ancestor is here 4.
 
         int rk = find_the_least_common_ancestor(root, 3, 5);
+        System.out.println(rk);
     };
 
     static int find_the_least_common_ancestor(TreeNode root, int v1, int v2){
@@ -1146,43 +1123,39 @@ public class Facebook {
     //32. Find all unique triplets in an array, giving sum of zero (array)
     static void find_all_unique_triplets_in_an_array_test(){
         int[] nums = {-1, 0, 1, 2, -1, -4};
-        List<List<Integer>> results = find_all_unique_triplets_in_an_array(nums);
+        List<int[]> results = find_all_unique_triplets_in_an_array(nums);// {{-1, 0, 1}, {-1, -1, 2}}
         System.out.println();
     };
 
-    static List<List<Integer>> find_all_unique_triplets_in_an_array(int[] nums) {
-        Arrays.sort(nums);
-        List<List<Integer>> result=new ArrayList<>();
-        for(int i=0;i<nums.length-2;){
-            int target=-nums[i];
-            int front=i+1;
-            int last=nums.length-1;
-            while(front<last){
-                int sum=nums[front]+nums[last];
-                if(sum<target)
+    static List<int[]> find_all_unique_triplets_in_an_array(int[] arrs) {
+        Arrays.sort(arrs);
+        List<int[]> results = new LinkedList<>();
+        for(int i = 0; i < arrs.length-2; i++){
+            int front = i + 1;
+            int end = arrs.length-1;
+            int target = -arrs[i];
+            int[] result = {0,0,0};
+            while(end>front){
+                int sum = arrs[front] + arrs[end];
+                if(target>sum) {
+                    //if smaller abs target number > range of sum(front, end) move target number to next
                     front++;
-                else if(sum>target)
-                    last--;
+                }
+                else if(target==sum) {
+                    //if smaller abs target number = range of sum(front, end) the target, start, end are right number
+                    result[0] = arrs[i];
+                    result[1] = arrs[front];
+                    result[2] = arrs[end];
+                    results.add(result);
+                    break;
+                }
                 else{
-                    List<Integer> list=new ArrayList<>();
-                    list.add(-target);
-                    list.add(nums[front]);
-                    list.add(nums[last]);
-                    result.add(list);
-                    front++;
-                    last--;
-                    while(front<last&&nums[front-1]==nums[front])
-                        front++;
-                    while(last>front&&nums[last+1]==nums[last])
-                        last--;
+                    //if smaller abs target number < range of sum(front, end) move end back
+                    end--;
                 }
             }
-            i++;
-            while (i  < nums.length && nums[i] == nums[i-1])
-                i++;
         }
-
-        return result;
+        return results;
     }
 
     //33. Find maximum path sum in non-empty binary tree
@@ -1234,48 +1207,47 @@ public class Facebook {
 
     //35. Write a function to compute intersection of arrays (sort/search)
     static void compute_intersection_of_arrays_test(){
-        int[] arr1 = {1,2,3, 3};
+        int[] arr1 = {1,2,3};
         int[] arr2 = {5,3,2};
-        Set<Integer> set = compute_intersection_of_arrays(arr1, arr2);
+        Set<Integer> set = compute_intersection_of_arrays(arr1, arr2);  //{3,2}
     };
-    static Set<Integer> compute_intersection_of_arrays(int[] arr1, int[] arr2){
-        if (arr1 == null || arr2 == null) {
-            return null;
-        }
-        Set<Integer> result = new HashSet<>();
-        Set<Integer> set = new HashSet<>();
-        for(int k : arr1)
-            set.add(k);
-        for(int i : arr2){
-            if(set.contains(i))
-                result.add(i);
-        }
 
-        return result;
-    };
+    static Set<Integer> compute_intersection_of_arrays(int[] arr1, int[] arr2) {
+        Set<Integer> set1 = new HashSet<>();   //first put arr1 to Set1 for compare
+        Set<Integer> set2 = new HashSet<>();   //loop arr2 to compare Set1, same i add to Set2
+
+        for(int i : arr1)
+            set1.add(i);
+
+        for(int j : arr2)
+            if(set1.contains(j))
+                set2.add(j);
+        return set2;
+    }
 
     //38. Group anagrams together in an array of strings (arrays/strings)
     static void group_anagrams_together_in_an_array_of_strings_test(){
         String[] strs = {"eat", "tea", "tan", "ate", "nat", "bat"};
-        group_anagrams_together_in_an_array_of_strings(strs);
+        HashMap<String, List<String>> strs1 = group_anagrams_together_in_an_array_of_strings(strs);
+        //{{"eat", "tea", "ate"}, {"tan","nat"}, {"bat"}}
     }
-    static HashMap<Integer, List<String>> group_anagrams_together_in_an_array_of_strings(String[] strs){
-        HashMap<Integer, List<String>> map = new HashMap<>();
 
-        for(String str : strs){
-            //String str1 = new StringBuffer(str).reverse().toString();
-            int iStr = str.charAt(0) + str.charAt(1) + str.charAt(2) - 3* 'a';
-            if(map.containsKey(iStr)){
-                List<String> strList = map.get(iStr);
-                strList.add(str);
+    static HashMap<String, List<String>>  group_anagrams_together_in_an_array_of_strings(String[] strs) {
+        HashMap<String, List<String>> map = new HashMap<>();
+        for(String str : strs){               //convert each string to sorted chrs string as map key ot group same key strings.
+            char[] chrs = str.toCharArray();
+            Arrays.sort(chrs);
+            String str1 = String.valueOf(chrs);
+            List<String> list1;
+            if(map.containsKey(str1)){
+                list1 = map.get(str1);
             }
-            else{
-                List<String> strList = new ArrayList<>();
-                strList.add(str);
-                map.put(iStr, strList);
+            else {
+                list1 = new ArrayList<>();
             }
+            list1.add(str);
+            map.put(str1, list1);
         }
-
         return map;
     }
 
@@ -1294,9 +1266,10 @@ public class Facebook {
         root.left.right = new TreeNode(4);
         root.left.right.left = new TreeNode(3);
         root.left.right.right = new TreeNode(5);
-
-        convert_a_BST_to_sorted_circular_doubly_linked_list(root);
+        TreeNode node = convert_binary_tree_to_doubly_linked(root);
+        System.out.println();
     }
+/*
     static private TreeNode prev;
     static private TreeNode head;
     static TreeNode convert_a_BST_to_sorted_circular_doubly_linked_list(TreeNode node){
@@ -1317,11 +1290,12 @@ public class Facebook {
         return head;
 
     }
-
+*/
     //40. Determine the order of letters in a dictionary (graphs/trees)
     static void determine_the_order_of_letters_in_a_dictionary_test(){
         String str = "Jim quickly realized that the beautiful gowns are expensive";
-        determine_the_order_of_letters_in_a_dictionary(str);
+        HashMap<Character , Integer> result = determine_the_order_of_letters_in_a_dictionary(str);
+        System.out.println(result.size());
     }
 
     static HashMap<Character , Integer>  determine_the_order_of_letters_in_a_dictionary(String str){
@@ -1349,7 +1323,7 @@ public class Facebook {
         arr = sortedArraySquares(arr); // {1, 4, 9, 36}
     }
 
-    static int[] sortedArraySquares(int[] arr){
+    static int[] sortedArraySquares(int[] arr){   //start from both side of array to item*item
         int[] result = new int[arr.length];
         int left = 0;
         int right = arr.length - 1;
@@ -1399,48 +1373,36 @@ public class Facebook {
 //
 
 
-    static void findAvargeVlaueOfLeaveOfBSTTest(){
-        Amazon.TreeNode root = new Amazon.TreeNode(4);
-        root.left = new Amazon.TreeNode(7);
-        root.right = new Amazon.TreeNode(9);
-        root.left.left = new Amazon.TreeNode(10);
-        root.left.right = new Amazon.TreeNode(2);
-        root.right.right = new Amazon.TreeNode(4);
-        root.left.right.right = new Amazon.TreeNode(6);
-        root.left.right.right.left = new Amazon.TreeNode(2);
-        findAvargeVlaueOfLeaveOfBST(root);
+    static void findAvargeValueOfLeaveOfBSTTest(){
+        TreeNode root = new TreeNode(4);
+        root.left = new TreeNode(7);
+        root.right = new TreeNode(9);
+        root.left.left = new TreeNode(10);
+        root.left.right = new TreeNode(2);
+        root.right.right = new TreeNode(4);
+        findAvargeValueOfLeaveOfBST(root);
+        //leave 1: 4 avg 4/1 = 4
+        //leave 2: 7, 9 avg (7+9)/2 = 8
+        //leave 3: 10, 2, 4 avg (10+2+4)/3 = 5
     }
-
-    static HashMap<Integer, List<Integer>> map = new HashMap<>();
-    static List<Integer> findAvargeVlaueOfLeaveOfBST(Amazon.TreeNode root){
-        List<Integer> result = new ArrayList<>();
-        findAvargeVlaueOfLeaveOfBSTUtl(root, 0);
-        for(List vals : map.values()){
-            float val = 0;
-            for(int i = 0; i < vals.size(); i++)
-                val = val + (int)vals.get(i);;
-            if(vals.size()>0)
-                result.add((int)Math.ceil(val/vals.size()));
+    static List<Integer> findAvargeValueOfLeaveOfBST(TreeNode root){
+        List<Integer> avgs = new ArrayList<>();
+        int avg = 0;
+        level_order_traversal_of_binary_tree(root);
+        List<TreeNode> list = new ArrayList<>();
+        list.add(root);
+        while (list.size()>0){
+            avg = 0;
+            for(TreeNode node : list){
+               avg = avg + node.key;
+            }
+            avg = avg/list.size();
+            avgs.add(avg);
+            System.out.println(avg);
+            list  = travelGivenLevel(list);
         }
-        return result;
+        return avgs;
     }
-
-    static void findAvargeVlaueOfLeaveOfBSTUtl(Amazon.TreeNode node, int leave) {
-        if(node==null)
-            return;
-        //int val = node.key;
-        List<Integer> vals; // = new ArrayList<>();
-        if(map.containsKey(leave))
-            vals = map.get(leave);
-        else
-            vals = new ArrayList<>();
-        vals.add(node.key);
-        map.put(leave, vals);
-        findAvargeVlaueOfLeaveOfBSTUtl(node.left,leave+1);
-        findAvargeVlaueOfLeaveOfBSTUtl(node.right,leave+1);
-        return;
-    }
-
 
 //Tree
 
@@ -1478,55 +1440,49 @@ public class Facebook {
         root.right = new TreeNode(3);
         root.left.left = new TreeNode(4);
         root.left.right = new TreeNode(5);
-        treeIndorderTravelofBST(root);
+        List<TreeNode> list = new ArrayList<>();
+        travel_Inorder_of_BST(root, list);
         TreeNode nextNode = getNextNode(root.left);
         return;
     }
 
-    static void treeIndorderTravelofBST(TreeNode root){
-        if(root==null)
-            return;
-        if(root.left!=null)
-            treeIndorderTravelofBST(root.left);
-        System.out.printf("%s ", root.key);
-        if(root.right!=null)
-            treeIndorderTravelofBST(root.right);
-    };
-
     static TreeNode getNextNode(TreeNode node){
-        if(node==null)
-            return null;
-        if(node.left!=null)
-            return node.left;
-        if(node.right!=null)
-            return node.right;
+        if(node!=null)  //current node
+            return node.right;   //Inoder: node.lert->node->node.right
         return null;
     };
 
     //youtube foacebook interview question
 
-    static void findLongestSubarrayBySubTest(){
+    static void findLongestSubarrayBySumTest(){
         int[] arr = {1, 2, 3, 7, 5};
         int s = 12;
-        arr = findLongestSubarrayBySub(s, arr); //{1,3)
+        arr = findLongestSubarrayBySum(s, arr);
+        //{1,3)  1+2+3 = 6 < 12 and 1+2+3 + 7 = 13 > 12
+        System.out.println(arr);
     }
 
-    static int[] findLongestSubarrayBySub(int s, int[] arr){
-        int[] result = new int[]{-1};
-        int left = 0;
-        int right = 0;
+    static int[] findLongestSubarrayBySum(int s, int[] arr) {
+        int[] result = {0, 0};
+        if(arr==null)
+            return result;
         int sum = 0;
-
-        while(right < arr.length){
-            sum += arr[right];
-            while(left<right && sum >s){
-                sum -= arr[left++];
+        int start = 0;
+        for(int i = 0; i<arr.length; i++){
+            if(sum + arr[i]>s){
+                if((i-1-start)>(result[1]-result[0])){
+                    result[1] = i-1;
+                    result[0] = start;
+                    sum = sum - arr[start];
+                    start++;
+                }
             }
-            if(sum==s && (result.length == 1 || result[1] - result[0] < right - left)) {
-                result = new int[] {left+1, right+1};
+            else{
+                sum = sum + arr[i];
             }
-            right++;
         }
+        result[0] = arr[result[0]];
+        result[1] = arr[result[1]];
         return result;
     }
 
@@ -1546,38 +1502,39 @@ public class Facebook {
     // Output: false
     // Explanation: the arary cannot be partition two equal subsets.
 
-    static void conPartitionTest(){
-        int[] arr = new int[]{1, 5, 11, 5};
-
-        boolean bRe = conPartition(arr);
-        arr =new int[]{1, 2, 3, 5};
-        bRe = conPartition(arr);
+    static void canPartitionTest(){
+        int[] arr = new int[]{1, 5, 11, 5};   //{1,5,5} = {11}
+        boolean bRe = canPartition(arr);
+        System.out.println(bRe);
+        arr =new int[]{1, 2, 3, 5};             // {1,2,3} <> {5}
+        bRe = canPartition(arr);
+        System.out.println(bRe);
     }
 
-    static boolean conPartition(int[] arr){
-        int total = 0;
-        for(int i=0; i<arr.length; i++){
-            total += arr[i];
-        }
-        if(total%2!=0)
-            return false;
-        int sum = total/2;
-
-        return conPartitionUtil(arr, 0, arr.length-1, sum);
-    }
-
-    static boolean conPartitionUtil(int[] arr, int left, int right, int sum){
-        int total = 0;
-        int mid = left + (right-left)/2;
-        for(int i=left; i<=mid; i++){
-            total += arr[i];
-        }
-        if(total==sum)
+    static boolean canPartition(int[] arr) {
+        if(arr.length<1)
             return true;
-        if(total>sum)
-            return conPartitionUtil(arr, left, mid, sum);
-        else
-            return conPartitionUtil(arr, mid+1, right, sum);
+        Arrays.sort(arr);
+        int left = 0;
+        int right = arr.length-1;
+        int leftTotal = 0;
+        int rightTotal = 0;
+        leftTotal = arr[left];
+        rightTotal = arr[right];
+        while(right>left){
+            if(leftTotal<rightTotal){
+                left++;
+                leftTotal = leftTotal + arr[left];
+            }
+            else if(leftTotal==rightTotal){
+                return true;
+            }
+            else{
+                right--;
+                rightTotal = rightTotal + arr[right];
+            }
+        }
+        return false;
     }
 
     //leevcode
@@ -1586,7 +1543,9 @@ public class Facebook {
     static void findTwoNumbersSumInArrayEqualTargetValueTest(){
         int[] nums = {2, 7, 11, 15};
         int target = 9;
-        int[] returns = findTwoNumbersSumInArrayEqualTargetValue(nums, target); //[0, 1]
+        int[] returns = findTwoNumbersSumInArrayEqualTargetValue(nums, target);
+        //[2, 7]
+        System.out.println(returns);
     }
     static int[] findTwoNumbersSumInArrayEqualTargetValue(int[] nums, int target){
         int[] returns = {0, 0};
@@ -1594,7 +1553,7 @@ public class Facebook {
 
         for(int i = 0; i < nums.length; i++){
             if(map.containsKey(nums[i])){
-                return new int[]{map.get(nums[i]), i};
+                return new int[]{nums[map.get(nums[i])], nums[i]};
             }
             else{
                 map.put(target-nums[i], i);
@@ -1610,6 +1569,7 @@ public class Facebook {
     static class ListNode{
         int val;
         ListNode next;
+        ListNode prev;
         ListNode(int x) {val = x;}
     }
 
@@ -1665,5 +1625,74 @@ public class Facebook {
         }
         return l3;
     }
+
+    //5/10/2021 Facebook interview.
+    //1. Get Binary Search Tree max summary of leaves.
+    static void get_binary_search_tree_max_summary_of_leaves_test(){
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(5);
+        root.left.right = new TreeNode(3);
+        root.right = new TreeNode(7);      //max sum in leave 2 => 5+7 =12
+        int max = get_binary_search_tree_max_summary_of_leaves(root);
+        System.out.println(max);
+    }
+    static List<TreeNode> travelGivenLeaveofTree(List<TreeNode> list){
+        List<TreeNode> list1 = new ArrayList<>();
+        for(TreeNode node : list){
+            if(node.left!=null)
+                list1.add(node.left);
+            if(node.right!=null)
+                list1.add(node.right);
+        }
+        return list1;
+    }
+
+    static int get_binary_search_tree_max_summary_of_leaves(TreeNode root){
+        int maxSum = Integer.MIN_VALUE;
+        List<TreeNode> list = new ArrayList<>();
+        list.add(root);
+        while(list.size()>0){
+            int sum = 0;
+            for(TreeNode node : list){
+                sum = sum + node.key;
+            }
+            if(sum>maxSum)
+                maxSum = sum;
+            list = travelGivenLeaveofTree(list);
+        }
+        return maxSum;
+    }
+
+    //2. Check words if sorted as char array.
+    // String[] words = {"Check", "words", "if", "sorted"};
+    // char[] alph = {'c', 'w', 'i', 's'}
+
+    static void check_words_if_sorted_as_char_array_test(){
+        String[] words = {"Check", "words", "if", "sorted"};
+        char[] alph = {'C', 'i', 'w', 's'};
+        boolean ret = check_words_if_sorted_as_char_array(words, alph);
+        System.out.println(ret);
+    }
+    static boolean check_words_if_sorted_as_char_array(String[] words, char[] alph){
+        HashMap<Character, Integer> map = new HashMap<>();
+        for(int i = 0; i < alph.length; i++)
+            map.put(alph[i], i);
+        int index = 0;
+        for(String word : words){
+            char[] chS = word.toCharArray();
+            char ch = chS[0];
+            if(map.containsKey(ch)){
+                int curr = map.get(ch);
+                if(curr<index)
+                    return false;
+                else
+                    index = curr;
+            }
+            else
+                return false;
+        }
+        return true;
+    }
+
 
 }
