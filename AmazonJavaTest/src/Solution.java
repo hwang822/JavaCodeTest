@@ -744,6 +744,10 @@ System.out.printf("\n14. Miscellaneous");
         //4-10 Tower Hopper Problem.
         Amazon.towerHopperProblemTest();
 
+        //https://www.youtube.com/watch?v=7lbwfkCfNQ4
+        //compare two tree have same internal travel
+        Amazon.two_bst_have_same_internal_travelsal_test();
+
 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 //Other interview codes test.
         //indeed using karat.

@@ -1598,7 +1598,7 @@ Include the amount of time you spent working on the solution.
     static void tradeStreamTest() throws IOException {
         HashMap<String, ShareData> tradeMap = new HashMap<>();
 
-        BufferedReader csvReader = new BufferedReader(new FileReader("c:\\workarea\\input1.csv"));
+        BufferedReader csvReader = new BufferedReader(new FileReader("d:\\workarea\\input1.csv"));
         String row = "";
         while ((row = csvReader.readLine()) != null) {
             String[] data = row.split(",");
@@ -1626,7 +1626,7 @@ Include the amount of time you spent working on the solution.
         // Copy all data from hashMap into TreeMap
         sorted.putAll(tradeMap);
 
-        PrintWriter cvsWriter = new PrintWriter(new File("c:\\workarea\\output1.csv"));
+        PrintWriter cvsWriter = new PrintWriter(new File("d:\\workarea\\output1.csv"));
 
         StringBuilder sb = new StringBuilder();
 
@@ -1822,5 +1822,52 @@ Include the amount of time you spent working on the solution.
         System.out.printf("%s %s %s %s\n", top, left, bottom, right);
         return;
     };
+
+//https://www.youtube.com/watch?v=7lbwfkCfNQ4
+//compare two tree have same internal travel
+
+    static void two_bst_have_same_internal_travelsal_test(){
+        TreeNode tree1 = new TreeNode(5);
+        tree1.left = new TreeNode(3);
+        tree1.left.left = new TreeNode(1);
+        tree1.right = new TreeNode(7);
+        tree1.right.left = new TreeNode(6);
+
+        TreeNode tree2 = new TreeNode(3);
+        tree2.left = new TreeNode(1);
+        tree2.right = new TreeNode(6);
+        tree2.right.left = new TreeNode(5);
+        tree2.right.right = new TreeNode(7);
+
+        boolean bSame = two_bst_have_same_internal_travelsal(tree1, tree2);
+        System.out.println(bSame);
+    }
+
+    // time complexity o(n+m)
+    // space complexity o(n+m)
+    static boolean two_bst_have_same_internal_travelsal(TreeNode tree1, TreeNode tree2){
+        List<Integer> list1 = new ArrayList<>();
+        List<Integer> list2 = new ArrayList<>();
+
+        bstInternalTravelsal(tree1, list1);
+        bstInternalTravelsal(tree2, list2);
+
+        return list1.equals(list2);
+    }
+
+    static void bstInternalTravelsal(TreeNode node, List<Integer> list){
+        if(node==null)
+            return;
+        bstInternalTravelsal(node.left,list);
+        list.add(node.key);
+        bstInternalTravelsal(node.right,list);
+    }
+
+
+//amazon interivew test 5/24/2021
+    // 1. get leave of BST childrwen list
+    // 2. log data |**|*
+
+
 
 }
