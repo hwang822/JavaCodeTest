@@ -727,49 +727,40 @@ public class HackerRank {
     //    This interface is found in java.util package and contains 2 methods compare(Object obj1,Object obj2) and equals(Object element).
     //    It provides multiple sorting sequences, i.e., you can sort the elements on the basis of any data member, for example, rollno, name, age or anything else.
 
-
     static class Player {
         String name;
-        int score;
+        Integer score;
 
-        Player(String name, int score) {
+        Player(String name, Integer score) {
             this.name = name;
             this.score = score;
         }
     }
+    static void playerComparatorTest() {   // Comparator<T> java.unit.
 
-    static void ComparatorTest() {   // Comparator<T> java.unit.
+        Player[] playerList = new Player[]
+            {
+                    new Player("amy", 100),
+                    new Player("aakansha", 75),
+                    new Player("david", 100),
+                    new Player("heraldo", 50),
+                    new Player("aleksa", 150)
+            };
 
-        //Sorting: Comparator
-
-        int n = 5;
-        Player[] player = new HackerRank.Player[]
-                {
-                        new HackerRank.Player("amy", 100),
-                        new HackerRank.Player("david", 100),
-                        new HackerRank.Player("heraldo", 50),
-                        new HackerRank.Player("aakansha", 75),
-                        new HackerRank.Player("aleksa", 150)
-                };
-
-        Checker checker = new HackerRank.Checker();
-
-        Arrays.sort(player, checker);
-
-        System.out.printf("\nSorts: \n");
-        for (int i = 0; i < player.length; i++) {
-            System.out.printf("%s %s\n", player[i].name, player[i].score);
-        }
-
+        playerComparator(playerList);
     }
-
-    static class Checker implements Comparator<Player> {   // Comparator<T> java.unit.
-        // complete this method
-        public int compare(Player a, Player b) {
-            if (a.score > b.score) return -1;
-            else if (a.score < b.score) return 1;
-            else return a.name.compareTo(b.name);
-        }
+    static void playerComparator(Player[] playList) {   // Comparator<T> java.unit.
+        Arrays.sort(playList, new Comparator<Player>(){
+            @Override
+            public int compare(Player p1, Player p2){
+                int scoreCom = p2.score.compareTo(p1.score);
+                if(scoreCom==0){ //p1, p2 score is same
+                    int nameCom = p1.name.compareTo(p2.name);  // p1, p2 difference of character name
+                    return nameCom;
+                }
+                return scoreCom;
+            }
+        });
     }
 
     //https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=sorting
@@ -2678,7 +2669,7 @@ long maxSum(vector<long> a, long m) {
     // Tree
     // https://www.hackerrank.com/interview/interview-preparation-kit/trees/challenges
 
-    // Lowest Common Ancestor
+    // Lowest Common Ancestor   //good
 
     static class TreeNode {
         TreeNode(int d) {
@@ -2718,7 +2709,7 @@ long maxSum(vector<long> a, long m) {
     }
 
 
-    //11-2 Tree: Height of a Binary Tree
+    //11-2 Tree: Height of a Binary Tree  //GOOD
 
     static void TreeHeightTest() {
 
@@ -2735,46 +2726,17 @@ long maxSum(vector<long> a, long m) {
         System.out.println(height);
 
     }
-
     public static int height(TreeNode root) {
-        int leftHeight = 0;
-        int rightHeight = 0;
-
-        if (root.left != null) {
-            leftHeight = 1 + height(root.left);
-        }
-
-        if (root.right != null) {
-            rightHeight = 1 + height(root.right);
-        }
-
-        return leftHeight > rightHeight ? leftHeight : rightHeight;
+        if(root==null)
+            return 0;
+        return Math.max(height(root.left)+1,height(root.right)+1);
     }
 
     //https://www.hackerrank.com/challenges/binary-search-tree-lowest-common-ancestor/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=trees
-    //11-3 Trees: Is This a Binary Search Tree?
+    //11-3 Trees: Is This a Binary Search Tree?   //GOOD
     static void checkBSTTest() { //Hackertrank no main()
-/*
-//input array: 1 2 3 4 5 6 7
-        TreeNode root = new TreeNode(4);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(6);
-        root.left.left = new TreeNode(1);
-        root.left.right = new TreeNode(3);
-        root.right.left = new TreeNode(5);
-        root.right.right = new TreeNode(7);  // ret yes
-*/
-/*
-//input array: 1 2 4 3 5 6 7
-        TreeNode root = new TreeNode(3);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(6);
-        root.left.left = new TreeNode(1);
-        root.left.right = new TreeNode(4);
-        root.right.left = new TreeNode(5);
-        root.right.right = new TreeNode(7);  // ret no
-*/
-// input array: 3 5 7 9 11 13 15
+
+        // input array: 3 5 7 9 11 13 15
         TreeNode root = new TreeNode(9);
         root.left = new TreeNode(5);
         root.right = new TreeNode(13);
@@ -2791,7 +2753,7 @@ long maxSum(vector<long> a, long m) {
     }
 
     static boolean check(TreeNode n, int min, int max) {
-        if (n == null)
+        if (n == null)     // pre treavel this tree nodes check each node value in the range of min and max
             return true;
         if (n.data <= min || n.data >= max)
             return false;
@@ -2957,81 +2919,55 @@ long maxSum(vector<long> a, long m) {
     }
 
 
-    //11-6 Tree Trravesal Test
+    //11-6 Tree Trravesal Test   //GOOD
     public static void TreeTravsalTest()
     {
-        BinaryTree tree = new BinaryTree();
-        tree.root = new TreeNode(1);
-        tree.root.left = new TreeNode(2);
-        tree.root.right = new TreeNode(3);
-        tree.root.left.left = new TreeNode(4);
-        tree.root.left.right = new TreeNode(5);
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
 
-        System.out.println("Preorder traversal of binary tree is ");
-        tree.printPreorder(tree.root);
+        List<Integer> list;
 
-        System.out.println("\nInorder traversal of binary tree is ");
-        tree.printInorder(tree.root);
+        list = new ArrayList<>();
+        preTrravesal(root, list);
+        System.out.println(list.toArray());
 
-        System.out.println("\nPostorder traversal of binary tree is ");
-        tree.printPostorder(tree.root);
-    }
+        list = new ArrayList<>();
+        inorderTrravesal(root, list);
+        System.out.println(list.toArray());
 
-    static class BinaryTree {
-        // Root of Binary Tree
-        TreeNode root;
-
-        BinaryTree() {
-            root = null;
-        }
-
-        //Given a binary tree, print its nodes according to the
-        //bottom-up" postorder traversal.
-        void printPostorder(TreeNode node) {
-            if (node == null)
-                return;
-
-            // first recur on left subtree
-            printPostorder(node.left);
-
-            // then recur on right subtree
-            printPostorder(node.right);
-
-            // now deal with the node
-            System.out.print(node.data + " ");
-        }
-
-        // Given a binary tree, print its nodes in inorder
-        void printInorder(TreeNode node) {
-            if (node == null)
-                return;
-
-            //first recur on left child
-            printInorder(node.left);
-
-            //then print the data of node
-            System.out.print(node.data + " ");
-
-            //now recur on right child
-            printInorder(node.right);
-        }
-
-        //Given a binary tree, print its nodes in preorder
-        void printPreorder(TreeNode node) {
-            if (node == null)
-                return;
-
-            //first print data of node
-            System.out.print(node.data + " ");
-
-            //then recur on left sutree
-            printPreorder(node.left);
-
-            //now recur on right subtree
-            printPreorder(node.right);
-        }
+        list = new ArrayList<>();
+        postTrravesal(root, list);
+        System.out.println(list.toArray());
 
     }
+
+    static void preTrravesal(TreeNode root, List<Integer> list){
+        if(root==null)
+            return;
+        list.add(root.data);
+        preTrravesal(root.left, list);
+        preTrravesal(root.right, list);
+    };
+
+    static void inorderTrravesal(TreeNode root, List<Integer> list){
+        if(root==null)
+            return;
+
+        inorderTrravesal(root.left, list);
+        list.add(root.data);
+        inorderTrravesal(root.right, list);
+    };
+
+    static void postTrravesal(TreeNode root, List<Integer> list){
+        if(root==null)
+            return;
+        postTrravesal(root.left, list);
+        postTrravesal(root.right, list);
+        list.add(root.data);
+    };
 
 
     // 12. Linked Lists

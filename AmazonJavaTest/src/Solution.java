@@ -197,7 +197,7 @@ System.out.printf("\n4. Sorting");
 
         //https://www.hackerrank.com/challenges/ctci-comparator-sorting/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=sorting
         //4-2 Sorting: Comparator     // sort integer and sum integer from lower price
-        HackerRank.ComparatorTest();   //Solved
+        HackerRank.playerComparatorTest();   //Solved
 
         //https://www.hackerrank.com/challenges/fraudulent-activity-notifications/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=sorting
         //4-3 Fraudulent Activity Notifications    //cont early days mid digital
@@ -494,7 +494,7 @@ System.out.printf("\n14. Miscellaneous");
 //1-12. Difference between sums of odd level and even level nodes of a Binary Tree              //二叉树的奇数级和偶数级节点之和之间的差
 //      return chird tree high and sum to even sum and odd sum.
 
-//1-13 Construct a special tree from given preorder traversal 根据给定的遍历遍历构造一棵特殊的树
+//1-13 Construct a special tree from given preorder traversal 根据给定的遍历遍历构造一棵特殊的树Comparator
 //     new root, root.left = new node root.right = new node,
 
 //1-14. Tree Isomorphism Problem  //树同构问题
@@ -701,7 +701,7 @@ System.out.printf("\n14. Miscellaneous");
         //3-10. Detect Loop in linked list \\检测链表中的循环
         HackerRank.has_cycleTest();  //no passed
 
-//2020-9-14  Amazon codeing test
+//2020-9-14  Amazon coding test
         //4-1 find find top 2 strings using at statements.
         Amazon.findTop2StringsUsedInStatements();
 
@@ -748,11 +748,30 @@ System.out.printf("\n14. Miscellaneous");
         //compare two tree have same internal travel
         Amazon.two_bst_have_same_internal_travelsal_test();
 
-//&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+        //https://www.youtube.com/watch?v=thkuu_FWFD8
+        //Amazon Interview System devleop engineer questions
+        //Print Left View of Binary tree.
+        Amazon.print_Left_View_of_BST_test();
+
+        //https://www.youtube.com/watch?v=mjZpZ_wcYFg
+        // String encode
+        Amazon.encode_test();
+
+//amazon interivew test 5/24/2021
+        // 1. get leave of BST childrwen list
+        Amazon.get_leave_of_BST_children_list_test();
+
+//Amazon interview 2nd round  6/15/2021
+
+        Amazon.getListofLoginTest();
+
+        //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 //Other interview codes test.
         //indeed using karat.
         Amazon.tradeStreamTest();
         Amazon.findRectangleTest();
+
+
 
 //////////////////////////////////////////////////
 

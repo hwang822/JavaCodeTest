@@ -4,9 +4,63 @@ import java.util.*;
 
 public class Amazon {
     //https://www.geeksforgeeks.org/amazon-interview-preparation/
-
+/*
     //https://www.geeksforgeeks.org/printing-brackets-matrix-chain-multiplication-problem/
-    //1-1. Printing brackets in Matrix Chain Multiplication Problem
+    //1-1. (hard)  Printing brackets in Matrix Chain Multiplication Problem
+    //思路：增加bracket数组，bracket[start][end]记录从start到end当中的mid，即加括号的地方。若start==end说明只有一个矩阵，直接输出。令name(使用引用)从'A'开始，一旦输出一个，便执行++name
+    static int[][] dp = new int[51][51]; //从1开始，不使用0
+    static int[][] bracket = new int[51][51]; //记录括号添加的位置
+
+    static int minMatrixMul(int[] arr, int num){
+        int start, mid, end;
+        int times; //记录当前的最优解，即最少的运算次数
+        //dp[i][i]=0 已经在初始化的时候完成
+        //dp[i][j] 代表i号到j号矩阵链的运算次数
+        for (int length = 2; length < num; ++length) {
+            for (start = 1; start <= num-length; ++start) {
+                end = start + length - 1;
+                dp[start][end] = Integer.MIN_VALUE;
+                for (mid = start; mid < end; ++mid) {
+                    times = dp[start][mid] + dp[mid+1][end] + arr[start-1]*arr[mid]*arr[end];
+                    //如果找到当前长度下更优的解，立刻更新dp数组
+                    if (times < dp[start][end]) {
+                        dp[start][end] = times;
+                        //更新添加括号的位置
+                        bracket[start][end] = mid;
+                    }
+                }
+            }
+        }
+        return dp[1][num-1];
+    }
+
+    static void printBrackets(int start, int end, char name){
+        String prtString = "";
+        if (start == end) {
+            prtString =  prtString + Character.toString(name);
+            ++name;
+            return;
+        }
+        prtString =  prtString +  "(";
+        printBrackets(start, bracket[start][end], name);
+        printBrackets(bracket[start][end]+1, end, name);
+        prtString =  prtString + ")";
+
+        System.out.println(prtString);
+    }
+
+    static void  matrixChainOrderTest() {
+        int num;
+        char name = 'A';
+        int arr[] = {30, 35, 15, 5, 10, 20};
+        //memset(dp, 0, sizeof(dp));
+        //num = sizeof(arr)/ sizeof(int);
+        num = arr.length;
+        System.out.printf("Minimum number of multiplications is %s Order: ", minMatrixMul(arr, num) );
+        printBrackets(1, num-1, name);
+    }
+
+*/
 
     // Driver code
     static void matrixChainOrderTest()
@@ -100,164 +154,139 @@ public class Amazon {
     //1-2. Count total set bits in all numbers from 1 to n
 
     static void countSetBitsUtilTest(){
-        int n = 4;
-        System.out.print("Total set bit count is ");
-        System.out.print(countSetBits(n));
+        int n = 4;   // bit set: 1, 10, 11, 100  total: 5
+        int x = countSetBits(n);
+        System.out.printf("Total set bit count is %s", x);
     }
 
     // Returns count of set bits present
     //  in all numbers from 1 to n
-    static int countSetBits( int n)
-    {
-        // initialize the result
+
+    static int countSetBits( int n) {
         int bitCount = 0;
-
-        for (int i = 1; i <= n; i++)
+        for(int i=1; i<=n; i++)
             bitCount += countSetBitsUtil(i);
-
         return bitCount;
     }
 
-    // A utility function to count set bits
-    // in a number x
-    static int countSetBitsUtil( int x)
-    {
-        if (x <= 0)
+    static int countSetBitsUtil( int x) {
+        if(x <= 0)
             return 0;
-        return (x % 2 == 0 ? 0 : 1) +
-                countSetBitsUtil(x / 2);
+        return (x % 2 == 0 ? 0 : 1) + countSetBitsUtil(x / 2);
     }
-
 
     //https://www.geeksforgeeks.org/number-subsequences-form-ai-bj-ck/
     //1-3. Number of subsequences of the form a^i b^j c^k
-        static void countSubsequencesTest(){
-            String s = "abbcabc";
-            System.out.println(countSubsequences(s));
+    static void countSubsequencesTest(){
+        String s = "abbcabc";
+        System.out.println(countSubsequences(s));
+    }
+
+
+    // Returns count of subsequences of the form
+    // a^i b^j c^k
+   //Input abbc, Output : 3 Subsequences are abc, abc and abbc
+
+    static int countSubsequences(String s)
+    {
+        // caused by different combination of 'a', 'b'
+        // and 'c'.
+
+        int aCount = 0;
+        int bCount = 0;
+        int cCount = 0;
+
+        // Traverse all characters of given string
+        for (int i = 0; i < s.length(); i++) {
+            if (s.charAt(i) == 'a')
+                aCount = (1 + 2 * aCount);
+            else if (s.charAt(i) == 'b')
+                bCount = (aCount + 2 * bCount);
+            else if (s.charAt(i) == 'c')
+                cCount = (bCount + 2 * cCount);
         }
-
-
-        // Returns count of subsequences of the form
-        // a^i b^j c^k
-        static int countSubsequences(String s)
-        {
-            // caused by different combination of 'a', 'b'
-            // and 'c'.
-
-            int aCount = 0;
-            int bCount = 0;
-            int cCount = 0;
-
-            // Traverse all characters of given string
-            for (int i = 0; i < s.length(); i++) {
-                if (s.charAt(i) == 'a')
-                    aCount = (1 + 2 * aCount);
-                else if (s.charAt(i) == 'b')
-                    bCount = (aCount + 2 * bCount);
-                else if (s.charAt(i) == 'c')
-                    cCount = (bCount + 2 * cCount);
-            }
-            return cCount;
-        }
+        return cCount;
+    }
 
     //https://www.geeksforgeeks.org/replace-every-element-with-the-greatest-on-right-side/
     //1-4. Replace every element with the greatest element on right side
-        static void nextGreatestTest(){
-            int[] arr = {16, 17, 4, 3, 5, 2};
-            nextGreatest(arr);  // => {17, 5, 5, 5, 2, -1}
+    static void nextGreatestTest(){
+        int[] arr = {16, 17, 4, 3, 5, 2};
+        nextGreatest(arr);  // => {17, 5, 5, 5, 2, -1}
+    }
+
+    static void nextGreatest(int arr[]){
+        if(arr.length==0)
+            return;
+        int c = arr[arr.length-1];
+        arr[arr.length-1] = -1;
+        for(int i=arr.length-2; i>=0; i--){
+            int c1 = c;
+            if(c<arr[i]){
+                c = arr[i];
+            }
+            arr[i] = c1;
+        }
+    }
+
+    //https://www.geeksforgeeks.org/highest-power-2-less-equal-given-number/
+    //1-5. Highest power of 2 less than or equal to given number
+    static void highestPowerof2Test(){
+        int n = 19; //=>16
+        int ret = highestPowerof2(n);
+    }
+
+    static int highestPowerof2(int n) {
+        int mod = 1;
+        while(n>0){
+            n = n-mod;  //19 - 1, 2, 4, 8, 16, 32 => 10-32 < 0 and 32/2=16. Highest power of 2 is 16
+            mod *= 2;
+        }
+        return mod/2;
+    }
+
+    //https://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/
+    //1-6. Count all possible paths from top left to bottom right of a mXn matrix
+    static void numberOfPathsTest(){
+        int m = 2, n = 3;
+        int ret = numberOfPaths(m,n);
+    }
+
+    static int numberOfPaths(int m, int n){
+        if((m==1) || (n ==1))
+            return 1;
+        return numberOfPaths(m-1, n) + numberOfPaths(m,n-1);
+    }
+
+    //https://www.geeksforgeeks.org/return-a-pair-with-maximum-product-in-array-of-integers/
+    //1-7. Find a pair with maximum product in array of Integers
+    static void maxProductTest(){
+        int arr[] = {-1, -3, -4, 2, 0, -5};  //-4, -5
+        int n = 6;
+        maxProduct(arr, n);
+    }
+    static void maxProduct(int arr[], int n) {
+        if (n < 2)
+        {
+            System.out.println("No pairs exists");
+            return;
         }
 
-        static void nextGreatest(int arr[]){
-            if(arr.length==0)
-                return;
-            int c = arr[arr.length-1];
-            arr[arr.length-1] = -1;
-            for(int i=arr.length-2; i>=0; i--){
-                int c1 = c;
-                if(c<arr[i]){
-                    c = arr[i];
+        // Initialize max product pair
+        int a = arr[0], b = arr[1];
+
+        // Traverse through every possible pair
+        // and keep track of max product
+        for (int i = 0; i < n; i++)
+            for (int j = i + 1; j < n; j++)
+                if (arr[i] * arr[j] > a * b){
+                    a = arr[i];
+                    b = arr[j];
                 }
-                arr[i] = c1;
-            }
-        }
 
-        //https://www.geeksforgeeks.org/highest-power-2-less-equal-given-number/
-        //1-5. Highest power of 2 less than or equal to given number
-        static void highestPowerof2Test(){
-            int n = 19; //=>16
-            int ret = highestPowerof2(n);
-
-        }
-        static int highestPowerof2(int n){
-            int mod = 1;
-            while (n>0){
-                n = n - mod;
-                mod *=2;
-            }
-            return mod/2;
-        }
-
-        //https://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/
-        //1-6. Count all possible paths from top left to bottom right of a mXn matrix
-        static void numberOfPathsTest(){
-            int m = 2, n = 3;
-            int ret = numberOfPaths(m,n);
-        }
-        static int numberOfPaths(int m, int n){
-            if((m==1) || (n ==1))
-                return 1;
-            return numberOfPaths(m-1, n) + numberOfPaths(m,n-1);
-        }
-
-        //https://www.geeksforgeeks.org/return-a-pair-with-maximum-product-in-array-of-integers/
-        //1-7. Find a pair with maximum product in array of Integers
-        static void maxProductTest(){
-            int arr[] = {-1, -3, -4, 2, 0, -5};
-            int n = 6;
-            maxProduct(arr, n);
-        }
-
-        static void maxProduct(int arr[], int n){
-            if(n<2){
-                System.out.println("No pairs exists");
-                return;
-            }
-
-            if(n==2){
-                System.out.println(arr[0] + " " + arr[1]);
-                return;
-            }
-
-
-            int posMax1 = Integer.MIN_VALUE;
-            int posMax2 = Integer.MIN_VALUE;
-            int negMax1 = Integer.MIN_VALUE;
-            int negMax2 = Integer.MIN_VALUE;
-
-            for(int i = 0; i < n; i++) {
-                if(arr[i]>posMax1){
-                    posMax2 = posMax1;
-                    posMax1 = arr[i];
-                }
-                else if(arr[i]>posMax2)
-                    posMax2 = arr[i];
-
-                if(arr[i]<0)
-                    if(Math.abs(arr[i])>Math.abs(negMax1)){
-                        negMax2 = negMax1;
-                        negMax1 = arr[i];
-                    }
-                    else if (Math.abs(arr[i])>Math.abs(negMax2))
-                        negMax2 = arr[i];
-            }
-
-            if (negMax1 * negMax2 > posMax1 * posMax2)
-                System.out.println("Max product pair is {"
-                        + negMax1 + ", " + negMax2 + "}");
-            else
-                System.out.println("Max product pair is {"
-                        + posMax1 + ", " + posMax2 + "}");
-        }
+        System.out.println("Max product pair is {" +
+                a + ", " + b + "}");
+    }//
 
 
     //https://www.geeksforgeeks.org/given-binary-string-count-number-substrings-start-end-1/
@@ -355,10 +384,12 @@ public class Amazon {
         node.left.left =  new Node(4);
         node.left.right =  new Node(5);
         node.right.left =  new Node(8);
+        int k = 2;
 
+        printKDistant(node, k);
     }
 
-    void printKDistant(Node node, int k){
+    static void printKDistant(Node node, int k){
         if(node==null)
             return;
         if (k == 0)
@@ -408,9 +439,10 @@ public class Amazon {
 
     static void constructTreeTest(){
         //BinaryTree tree = new BinaryTree();
-        int pre[] = new int[]{10, 30, 20, 5, 15};
-        char preLN[] = new char[]{'N', 'N', 'L', 'L', 'L'};
-        int n = pre.length;
+        int pre[] = new int[]{10, 30, 20, 5, 15};                       //      10
+        char preLN[] = new char[]{'N', 'N', 'L', 'L', 'L'};             // 30        15
+        int n = pre.length;                                             //20, 5,
+
 
         // construct the above tree
         Node mynode = constructTree(pre, preLN, n);
@@ -419,8 +451,9 @@ public class Amazon {
         System.out.println("Following is Inorder Traversal of the"
                 + "Constructed Binary Tree: ");
         printInorder(mynode);
-    }
 
+
+    }
 
     // A Binary Tree node
     static public class Node
@@ -989,7 +1022,7 @@ public class Amazon {
         LinkNode(int d) {data = d; next = null; }
     }
 
-    //2020-9-14  Amazon codeing test
+    //2020-9-14  Amazon coding test
     //4-1 find find top 2 strings using at statements.
     static void findTop2StringsUsedInStatements() {
 
@@ -1829,7 +1862,7 @@ Include the amount of time you spent working on the solution.
     static void two_bst_have_same_internal_travelsal_test(){
         TreeNode tree1 = new TreeNode(5);
         tree1.left = new TreeNode(3);
-        tree1.left.left = new TreeNode(1);
+        tree1.left.left = new TreeNode(1);    // 1->3->5->6->7  (left->node->right)
         tree1.right = new TreeNode(7);
         tree1.right.left = new TreeNode(6);
 
@@ -1837,7 +1870,7 @@ Include the amount of time you spent working on the solution.
         tree2.left = new TreeNode(1);
         tree2.right = new TreeNode(6);
         tree2.right.left = new TreeNode(5);
-        tree2.right.right = new TreeNode(7);
+        tree2.right.right = new TreeNode(7);  // 1->3->5->6->7  (left->node->right)
 
         boolean bSame = two_bst_have_same_internal_travelsal(tree1, tree2);
         System.out.println(bSame);
@@ -1863,11 +1896,143 @@ Include the amount of time you spent working on the solution.
         bstInternalTravelsal(node.right,list);
     }
 
+    //https://www.youtube.com/watch?v=thkuu_FWFD8
+    //Print Left View of Binary tree.
+    static void print_Left_View_of_BST_test(){    //only see 1st left nodes of BST
+        TreeNode node = new TreeNode(1);
+        node.left = new TreeNode(2);
+        node.right = new TreeNode(3);
+        node.right.right = new TreeNode(6);     //1,2,6
+        List<TreeNode> list = new ArrayList<>();
+        list.add(node);
+        print_Left_View_of_BST(list);
+        System.out.println(list.toArray());
+    };
 
-//amazon interivew test 5/24/2021
-    // 1. get leave of BST childrwen list
+    static void print_Left_View_of_BST(List<TreeNode> list){
+        if(list.size()==0)
+            return;
+        int key = list.get(0).key;
+        System.out.println(key);
+
+        List<TreeNode> childlist = new ArrayList<>();
+        for(int i = 0 ; i < list.size(); i++){
+            TreeNode childnode = list.get(i);
+            if(childnode.left!=null)
+                childlist.add(childnode.left);
+            if(childnode.right!=null)
+                childlist.add(childnode.right);
+        }
+        print_Left_View_of_BST(childlist);
+        return;
+    };
+
+    //https://www.youtube.com/watch?v=mjZpZ_wcYFg
+    // String encode
+    static void encode_test(){
+        String s = "aaabbcb";  //3a2b1c1b
+        String res = encode(s);
+        System.out.println(res);
+    }
+
+    static String encode(String input) {
+        String encode = "";
+        String sCh = "";
+        int iCount = 0;
+        for(int i = 1; i <= input.length(); i++){
+            String nextCh = input.substring(i-1, i);
+            if(sCh==""){
+                sCh = nextCh;
+                iCount = 1;
+            }else if(sCh.equals(nextCh)){
+                iCount++;
+            }else {
+                encode = encode + iCount + sCh;
+                sCh = nextCh;
+                iCount = 1;
+            }
+        }
+        if(iCount>0)
+            encode = encode + iCount + sCh;
+        return encode;
+    }
+
+    //amazon interivew test 5/24/2021
+    // 1. get leave of BST children list
+
+    static void get_leave_of_BST_children_list_test(){
+        TreeNode node = new TreeNode(1);
+        node.left = new TreeNode(2);
+        node.right = new TreeNode(3);
+        node.right.right = new TreeNode(6);
+        List<TreeNode> nodeList = new ArrayList<>();
+        nodeList.add(node);
+        get_leave_of_BST_children_list(nodeList);
+        //System.out.println(list);
+
+    };
+
+    static void get_leave_of_BST_children_list(List<TreeNode> nodelist){
+        if(nodelist.size()==0)
+            return;
+
+        List<TreeNode> LocalnodeList = new ArrayList<>();
+        for(TreeNode node : nodelist) {
+            System.out.println(node.key);
+            if(node.left!=null)
+                LocalnodeList.add(node.left);
+            if(node.right!=null)
+                LocalnodeList.add(node.right);
+        }
+        if(LocalnodeList.size()>0) {
+            get_leave_of_BST_children_list(LocalnodeList);
+        }
+        return;
+
+    };
+
     // 2. log data |**|*
 
 
+/*  //Amazon interview 2nd round  6/15/2021
+    Given a modified Unix /etc/passwd file (colon separated) with the following format: <login>:<password>:<id>:<name>:<last_change_date>
+
+    Provide a list of all logins and names that are older than a provided date.
+
+    Example:
+    alice:S3cretP4sswd:12345:Henry Wang:20210201
+    bob:An0therPassd:67852:Steve O'Dor:20210314
+    carlos:Someth1nElse:23443:Tyler:20210430
+*/
+
+    static class logInfo{
+        String lonin;
+        String name;
+        logInfo(String login, String name){
+            this.lonin = login;
+            this.name = name;
+        }
+    }
+
+    static void getListofLoginTest(){
+        String[] logins = {"alice:S3cretP4sswd:12345:Henry Wang:20210201",
+        "bob:An0therPassd:67852:Steve O'Dor:20210314",
+        "carlos:Someth1nElse:23443:Tyler:20210430"};
+        String providedDate = "20210317";
+        List<logInfo> list = getListofLogin(logins, providedDate);
+        System.out.println(list);
+    }
+
+    static List<logInfo> getListofLogin(String[] logs, String sDate) {
+        List<logInfo> list = new ArrayList<>();
+        for(String log : logs){
+            String info[] = log.split(":");
+            if(info[4].compareTo(sDate)<0){
+                logInfo item = new logInfo(info[0], info[3]);
+                list.add(item);
+            }
+        }
+        return list;
+    }
 
 }
