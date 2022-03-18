@@ -1427,23 +1427,19 @@ public class Amazon {
         int ret = uniquesPathOfGrid_nxm(4, 6);  //ret 56
         ret = uniquesPathOfGrid_nxm(3, 4);  //ret 10
     }
-
     static int uniquesPathOfGrid_nxm(int n, int m){
         //agorithm go first row or column, paths number always 1, the others would be paths[i][j] = paths[i-1][j] + paths[i][j-1]
        int[][] paths = new int[n][m];
        for(int i=0; i<n; i++) {
            for (int j = 0; j < m; j++) {
-                if((i==0)||(j==0)){
+                if((i==0)||(j==0))
                     paths[i][j]=1;
-                }
-                else {
+                else
                     paths[i][j] = paths[i-1][j] + paths[i][j-1];
-                }
            }
        }
        return paths[n-1][m-1];
     }
-
     //https://www.youtube.com/watch?v=eaYX0Ee0Kcg
     //4-9 find k Smallest items (points with closer x-y points to [0,0]).
     static void findKSmallestItemsTest(){
@@ -1458,9 +1454,9 @@ public class Amazon {
         int smallestDist = 0;
         int[] group = new int[k]; // the [k] always keep smallest dist index
         for(int i = 0; i < points.length; i++){
-            int dist = points[i][0]*points[i][0] + points[i][1]*points[i][1];
+            int dist = points[i][0]*points[i][0] + points[i][1]*points[i][1];  //20, 4, 1, 29, 13, 13  k=3
             if(i<k){
-                if(i==0){
+                if(i==0){                     // 20:[0,0,0] -> 4:[1,0,0] -> 1:[2,1,0]
                     group[i] = i;
                     smallestDist = dist;
                 }
@@ -1476,8 +1472,8 @@ public class Amazon {
                 }
             }
             else {
-                if(dist<smallestDist){
-                    group[k-1] = i;
+                if(dist<smallestDist){     // 20:[0,0,0] -> 4:[1,0,0] -> 1:[2,1,0]->29[2,1,0]->13[2,1,0]->13[2,1,0]
+                    group[k-1] = i;        // move index
                     smallestDist = dist;
                 }
             }
@@ -1496,11 +1492,19 @@ public class Amazon {
         int k = 4;
         int[] tower = {4, 2, 0, 0, 2, 0};
         boolean ret  = towerHopperProblem(tower, k);
-        int[] tower1 = {1, 3, 5, 3, 1, 0};
+        k = 2;
+        int[] tower1 = {1, 3, 6, 3, 1, 0};
+        ret  = towerHopperProblem(tower1, k);
     }
 
     static boolean towerHopperProblem(int[] tower, int k){
-
+        if(tower.length<=1)
+            return true;
+        for(int index = 1; index < tower.length; index++){
+            if((tower[index-1]-tower[index])>k)
+                return false;
+            continue;
+        }
         return true;
     }
 
@@ -1885,7 +1889,7 @@ Include the amount of time you spent working on the solution.
         bstInternalTravelsal(tree1, list1);
         bstInternalTravelsal(tree2, list2);
 
-        return list1.equals(list2);
+        return list1.equals(list2); // compare two list same
     }
 
     static void bstInternalTravelsal(TreeNode node, List<Integer> list){
@@ -1905,27 +1909,31 @@ Include the amount of time you spent working on the solution.
         node.right.right = new TreeNode(6);     //1,2,6
         List<TreeNode> list = new ArrayList<>();
         list.add(node);
-        print_Left_View_of_BST(list);
+        List<TreeNode> leftlist = new ArrayList<>();
+        print_Left_View_of_BST(list, leftlist);
         System.out.println(list.toArray());
     };
-
-    static void print_Left_View_of_BST(List<TreeNode> list){
-        if(list.size()==0)
-            return;
-        int key = list.get(0).key;
-        System.out.println(key);
-
-        List<TreeNode> childlist = new ArrayList<>();
-        for(int i = 0 ; i < list.size(); i++){
-            TreeNode childnode = list.get(i);
-            if(childnode.left!=null)
-                childlist.add(childnode.left);
-            if(childnode.right!=null)
-                childlist.add(childnode.right);
+    static void print_Left_View_of_BST(List<TreeNode> chlist, List<TreeNode> leftlist){
+        boolean left = true;
+        List<TreeNode> list = new ArrayList<>();
+        for(TreeNode chnode : chlist){
+            if(left==true){
+                leftlist.add(chnode);
+                left = false;
+            }
+            if(chnode.left!=null){
+                list.add(chnode.left);
+            }
+            if(chnode.right!=null){
+                list.add(chnode.right);
+            }
         }
-        print_Left_View_of_BST(childlist);
+        if(list.size()>0){
+            print_Left_View_of_BST(list, leftlist);
+        }
         return;
-    };
+    }
+
 
     //https://www.youtube.com/watch?v=mjZpZ_wcYFg
     // String encode
@@ -1936,6 +1944,34 @@ Include the amount of time you spent working on the solution.
     }
 
     static String encode(String input) {
+        String output = "";
+        int count = 0;
+        char cInput[] = input.toCharArray();
+        char last = 0;
+        for(char chr : cInput){
+            if(count==0){
+                last = chr;
+                count = 1;
+            } else {
+                if(chr==last){
+                    count = count + 1;
+                }
+                else {
+                    output = output + count + last;
+                    last = chr;
+                    count = 1;
+                }
+            }
+        }
+        if(count>0){
+            output = output + count + last;
+        }
+
+
+        return output;
+    }
+
+        static String encode1(String input) {
         String encode = "";
         String sCh = "";
         int iCount = 0;
@@ -1966,33 +2002,25 @@ Include the amount of time you spent working on the solution.
         node.right = new TreeNode(3);
         node.right.right = new TreeNode(6);
         List<TreeNode> nodeList = new ArrayList<>();
-        nodeList.add(node);
-        get_leave_of_BST_children_list(nodeList);
-        //System.out.println(list);
+        get_leave_of_BST_children_list(node, nodeList);  // travel tree leave node => 2, 6
+        System.out.println(nodeList);
 
     };
-
-    static void get_leave_of_BST_children_list(List<TreeNode> nodelist){
-        if(nodelist.size()==0)
+    static void get_leave_of_BST_children_list(TreeNode node, List<TreeNode> nodelist) {
+        if(node==null)
             return;
-
-        List<TreeNode> LocalnodeList = new ArrayList<>();
-        for(TreeNode node : nodelist) {
-            System.out.println(node.key);
-            if(node.left!=null)
-                LocalnodeList.add(node.left);
-            if(node.right!=null)
-                LocalnodeList.add(node.right);
+        if((node.left==null)&&(node.right==null)){
+            nodelist.add(node);
+            return;
         }
-        if(LocalnodeList.size()>0) {
-            get_leave_of_BST_children_list(LocalnodeList);
-        }
+        if(node.left!=null)
+            get_leave_of_BST_children_list(node.left, nodelist);
+        if(node.right!=null)
+            get_leave_of_BST_children_list(node.right, nodelist);
         return;
-
-    };
+    }
 
     // 2. log data |**|*
-
 
 /*  //Amazon interview 2nd round  6/15/2021
     Given a modified Unix /etc/passwd file (colon separated) with the following format: <login>:<password>:<id>:<name>:<last_change_date>
@@ -2020,16 +2048,18 @@ Include the amount of time you spent working on the solution.
         "carlos:Someth1nElse:23443:Tyler:20210430"};
         String providedDate = "20210317";
         List<logInfo> list = getListofLogin(logins, providedDate);
-        System.out.println(list);
+        System.out.println(list);  //carlos, Tyler
     }
 
     static List<logInfo> getListofLogin(String[] logs, String sDate) {
         List<logInfo> list = new ArrayList<>();
         for(String log : logs){
             String info[] = log.split(":");
-            if(info[4].compareTo(sDate)<0){
-                logInfo item = new logInfo(info[0], info[3]);
-                list.add(item);
+            if(info.length==5){
+                if(Integer.parseInt(info[4])>=Integer.parseInt(sDate)){
+                    logInfo item = new logInfo(info[0], info[3]);
+                    list.add(item);
+                }
             }
         }
         return list;
