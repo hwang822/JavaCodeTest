@@ -28,13 +28,15 @@ class Solution { // total 50 solved
     }
 
     public static void main(String[] args) throws IOException {
-        constractTreefromGivenPreorderTraversalTest(); //1. Construct a special tree from given preorder traversal (to know wihch one would be node and leaf, put leaf to prv node)
-        getMinPostiveNumberNoInArrayTest(); //2. get first missed number at 1, 2 ... n (sorted array first)
-        getMostUsedWordTest(); //3 get Most Used Word, Most Used Word Times from words"
-        getTreeHighTest(); //4 Write a Program to Find the Maximum Depth or Height of a Tree
-        playerComparatorTest(); //5, sort list object by field.
-        pickingNumbersTest(); //6,
-        findKSmallestItemsTest(); //7
+        //constractTreefromGivenPreorderTraversalTest(); //1. Construct a special tree from given preorder traversal (to know wihch one would be node and leaf, put leaf to prv node)
+        //getMinPostiveNumberNoInArrayTest(); //2. get first missed number at 1, 2 ... n (sorted array first)
+        //getMostUsedWordTest(); //3 get Most Used Word, Most Used Word Times from words"
+        //getTreeHighTest(); //4 Write a Program to Find the Maximum Depth or Height of a Tree
+        //playerComparatorTest(); //5, sort list object by field.
+        //pickingNumbersTest(); //6,
+        //findKSmallestItemsTest(); //7
+        getSongsTimeinLimitTest();
+
     }
 
     //1 ***********************
@@ -119,7 +121,7 @@ class Solution { // total 50 solved
         int mostUsedTimes = 0;
         for (String word : words) {
             int iTimes = 1;
-            map.keySet()
+            map.keySet();
             if (map.containsKey(word)) {
                 iTimes = map.get(word) + 1;
             }
@@ -308,5 +310,43 @@ class Solution { // total 50 solved
             }
         }
         return heap;
+    }
+
+    public static void getSongsTimeinLimitTest() {
+        // SLB interview from songtimes list find two songs time sum = targetTime
+        int targetTime = 420;
+        String[][] songTimes = {
+                {"Song1", "3:20"},
+                {"Song2", "4:30"},
+                {"Song3", "3:40"},
+                {"Song4", "1:12"},
+        };
+
+        getSongsTimeinLimit(songTimes, targetTime);
+
+        //[Song1, 3:20]
+        //[Song3, 3:40]
+    }
+
+    public static void getSongsTimeinLimit(String[][] songTimes, int targetTime){
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for(int index = 0; index < songTimes.length; index++){
+            String[] songTime =  songTimes[index];
+            String[] time = songTimes[index][1].split(":");
+            int iTime = Integer.valueOf(time[0])*60 + Integer.valueOf(time[1]);
+            map.put(iTime, index);
+        }
+        for(int index = 0; index < songTimes.length; index++){
+            String[] songTime =  songTimes[index];
+            String[] time = songTime[1].split(":");
+            int iTime = Integer.valueOf(time[0])*60 + Integer.valueOf(time[1]);
+            if(map.containsKey(targetTime-iTime)){
+                System.out.println(Arrays.toString(songTimes[index]));
+                System.out.println(Arrays.toString(songTimes[map.get(targetTime-iTime)]));
+                return;
+            }
+        }
     }
 }
