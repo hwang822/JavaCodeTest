@@ -1,9 +1,9 @@
-import javax.swing.*;
 import java.util.*;
 
 public class Facebook {
 
     //****************************************
+    //Cracking the top 40 Facebook coding interview questions
     //https://www.educative.io/blog/cracking-top-facebook-coding-interview-questions
 
     //Array
@@ -27,8 +27,9 @@ public class Facebook {
             leftIndex--;
         }
 
-        for(int index = rightIndex; index>=0; index--){
-            arr[index]=0;
+        while(rightIndex>=0){
+            arr[rightIndex]=0;
+            rightIndex--;
         }
         System.out.println(Arrays.toString(arr));
 
@@ -37,33 +38,26 @@ public class Facebook {
     //2: Merge overlapping intervals
     static void merge_overlapping_intervals_test(){
         int[][] arrs = new int[][]{{1,5},{3,7},{4,6},{6,8},{10,12},{11,15}};
-
         mergeIntervals(arrs); // list = {{1, 8},{10, 15}}
     }
 
-    static List<int[]> mergeIntervals(int[][] arrs) {
+    static List<int[]> mergeIntervals(int[][] arrs) {        
         List<int[]> list = new ArrayList<>();
-        int[] intv = new int[2];
-
-        for(int index = 0; index < arrs.length; index++){
-            if(index==0){
-                intv = arrs[index];
-            } else {
-                if(intv[1]>=arrs[index][0]){
-                    intv[1] = arrs[index][1];
-                    System.out.println(Arrays.toString(intv));
-                } else {
-                    list.add(intv);
-                    System.out.println("Added " + Arrays.toString(intv));
-                    intv = arrs[index];                    
+        if(arrs.length>0){
+            int startIndex = 0;
+            int endIndex = 1;
+    
+            while(endIndex<arrs.length){
+                if(arrs[endIndex-1][1]<arrs[endIndex][0]){
+                    list.add(new int[]{arrs[startIndex][0],arrs[endIndex-1][1]});
+                    startIndex = endIndex; 
                 }
+                endIndex++;                                
             }
-            if(index == arrs.length-1){
-                list.add(intv);            
-                System.out.println("Added " + Arrays.toString(intv));
-            }
-                
-        }                
+            if((startIndex+1)!=endIndex)
+                list.add(new int[]{arrs[startIndex][0],arrs[endIndex-1][1]});
+        }        
+        
         return list;
     }
 
@@ -185,17 +179,49 @@ public class Facebook {
                                                         // head-> = 1 = 2 = 3 = 4 = 5 =
                                                         //       ||                  ||
                                                         //        =====================
-        LinkedList<Integer> list = new LinkedList<Integer>();
-        travel_Preorder_of_BST(root, list);
-        System.out.println(list.toString());
+        
+                                                        
+        TreeNode head = Convert_binary_tree_to_doubly_linked(root);
         return;
     }
-    static void travel_Preorder_of_BST(TreeNode node, LinkedList<Integer> list) {
+
+    static TreeNode Convert_binary_tree_to_doubly_linked(TreeNode root){
+         
+        LinkedList<TreeNode> list = new LinkedList<TreeNode>();        
+        travel_Inorder_of_BST(root, list);
+        System.out.println(list.toString());
+        TreeNode head = null;
+        TreeNode lastNode = null;
+        TreeNode newNode = null;
+        for(int index = 0; index < list.size(); index++){
+            newNode = list.get(index);
+            
+            if(index==0){
+                newNode.left = null;
+                head = newNode;
+            }
+            else {
+                newNode.left = lastNode;
+                lastNode.right = newNode;
+                if(index==list.size()-1){
+                    lastNode.right = head;
+                    head.left = lastNode;
+                    break;
+                }
+            }            
+            lastNode = newNode;            
+        }
+        return head;
+    }
+    
+    static void travel_Inorder_of_BST(TreeNode node, LinkedList<TreeNode> list) {
         if(node==null)    // using internal trave: recurse tree root:  root.left -> root -> root.right
-            return;
-        travel_Preorder_of_BST(node.left, list);
-        list.add(node.key);
-        travel_Preorder_of_BST(node.right, list);
+            return;        
+        if(node.left!=null)
+            travel_Inorder_of_BST(node.left, list);        
+        list.add(node);
+        if(node.right!=null)
+            travel_Inorder_of_BST(node.right, list);
         return;
     }
 
@@ -210,12 +236,12 @@ public class Facebook {
 
         LinkedList<TreeNode> list = new LinkedList<>();
         list.add(root);
-        travel_Inorder_of_BST(list);
+        travel_level_order_of_BST(list);
         //{1, 2, 3, 4, 5}
 
     }
 
-    static void travel_Inorder_of_BST(LinkedList<TreeNode> list) {
+    static void travel_level_order_of_BST(LinkedList<TreeNode> list) {
         if(list.size()==0){
             return;        
         }
@@ -230,7 +256,7 @@ public class Facebook {
                 leaveList.add(node.right);
         }  // get all children in same leave and rec function
 
-        travel_Inorder_of_BST(leaveList);
+        travel_level_order_of_BST(leaveList);
     }
 
     //7. Strings: Reverse words in a sentence
@@ -314,8 +340,22 @@ public class Facebook {
 
     //10. Math and Stats: Calculate the power of a number
     static void calculate_the_power_of_a_number_test(){
-        calculate_the_power_of_a_number(2, 5);
-        calculate_the_power_of_a_number(2, -2);
+        double ret = 0;
+        ret = calculate_the_power_of_a_number(2, 5);
+        System.out.println("calculate_the_power_of_a_number(2, 5) = " + ret);
+        ret = calculate_the_power_of_a_number(3, 4);
+        System.out.println("calculate_the_power_of_a_number(3, 4) = " + ret);
+        ret = calculate_the_power_of_a_number(1.5, 3);
+        System.out.println("calculate_the_power_of_a_number(1.5, 3) = " + ret);
+        ret = calculate_the_power_of_a_number(2, -2);
+        System.out.println("calculate_the_power_of_a_number(2, -2) = " + ret);
+/*
+power (2, 5) = 32
+power (3, 4) = 81
+power (1.5, 3) = 3.375
+power (2, -2) = 0.25
+ */
+
     }
     static double calculate_the_power_of_a_number(double x, int n){
         double pow = 1;
@@ -332,7 +372,7 @@ public class Facebook {
     //11 Backtracking: Find all possible subsets
     static int N = 5;
     static int M = 3;
-    static int[] a = {1,2,3,4,5};
+    static int[] a = {1,2,3,4,5};  // subsets: {1}, {2}, {3}, {4}, {5}, {1, 2}, {1, 3}, {1, 4}, {1, 5}, {2, 3}, {2, 4}, {2, 5}, {3, 4}, {3, 5}, {4, 5}, {1, 2, 3}, {1, 2, 4}, {1, 2, 5}, {1, 3, 4}, {1, 3, 5}, (1, 4, 5}, {2, 3, 4}, {2, 3, 5}, {2, 4, 5}, {3, 4, 5}, {1, 2, 3, 4}, {1, 2, 3, 5}, {1, 2, 4, 5}, {1, 3, 4, 5}, {2, 3, 4, 5}, {1, 2, 3, 4, 5}
     static int[] b = new int[M];
 
     static void C(int m, int n){
@@ -535,20 +575,33 @@ public class Facebook {
         root.left.left= new TreeNode(4);        //
         root.left.right= new TreeNode(5);       //
 
-        List<TreeNode> selist =serialize_deserialize_binary_tree(root);  // convert tree to double link tree (no circie)
-            // inorder travel: 4->2->5->1->3
-        //TreeNode deroot = deserialize_deserialize_binary_tree(selist);
+        LinkedList<TreeNode> selist =serialize_deserialize_binary_tree(root);  // convert tree to double link tree (no circie)
+        //System.out.println(selist.toArray());
+        // Preorder travel: 4->2->5->1->3
+        TreeNode deroot = deserialize_deserialize_binary_tree(selist);
         System.out.println();
     }
 
-    static List<TreeNode> serialize_deserialize_binary_tree(TreeNode root) {
+    static LinkedList<TreeNode> serialize_deserialize_binary_tree(TreeNode root) {
         LinkedList<TreeNode> list = new LinkedList<>();
-        list.add(root);
-        travel_Inorder_of_BST(list);
+        travel_Preorder_of_BST(root, list);
         return list;
     }
 
-    static TreeNode deserialize_deserialize_binary_tree(List<TreeNode> list) {
+    static void travel_Preorder_of_BST(TreeNode root, LinkedList<TreeNode> list){
+        if(root==null)
+            return;
+        if(root.left!=null)
+            travel_Preorder_of_BST(root.left, list);
+        list.add(root);
+        if(root.right!=null)
+            travel_Preorder_of_BST(root.right, list);
+    }
+
+    static TreeNode deserialize_deserialize_binary_tree(LinkedList<TreeNode> list) {
+        TreeNode root = null;
+        return root;
+ /*       
         if(list==null)
             return null;
 
@@ -568,8 +621,9 @@ public class Facebook {
                 }
             }
         }
-
+ 
         return root;
+*/        
     }
 
     //sorting and searching
@@ -1320,24 +1374,14 @@ public class Facebook {
     }
 
     static int[] sortedArraySquares(int[] arr){   //start from both side of array to item*item
-        int[] result = new int[arr.length];
-        int left = 0;
-        int right = arr.length - 1;
-
-        for(int i=arr.length-1; i >= 0; i--){
-            if(Math.abs(arr[left]) > arr[right]){
-                result[i] = arr[left] * arr[left];
-                left++;
-            }
-            else
-            {
-                result[i] = arr[right] * arr[right];
-                right--;
-            }
+        for(int index = 0; index < arr.length; index++){
+            arr[index] = arr[index]*arr[index];            
         }
-        return result;
+        Arrays.sort(arr);
+        System.out.println(Arrays.toString(arr));
+        return arr;
     }
-
+ 
     //facebook interview example. Find out avalage value of each leave nodes data in BST.
     //Given a binary tree. get the avarage value at each leave of the tree
     //input
@@ -1353,22 +1397,7 @@ public class Facebook {
     //
     //output: {4, 8, 6, 6, 2}
 
-//#1 InorderTravelTree and GetNextNode
-// Facebook remote interviewer by zhouhui at 8/18/2017, 12PM CTS.
-
-//(a) Inorder (Left, Root, Right) : 4 2 5 1 3
-//(b) Preorder (Root, Left, Right) : 1 2 4 5 3
-//(c) Postorder (Left, Right, Root) : 4 5 2 3 1
-// Breadth First or Level Order Traversal : 1 2 3 4 5
-
-//             1
-//		     /   \
-//         2       3
-//        / \
-//      4    5
-//
-
-
+ 
     static void findAvargeValueOfLeaveOfBSTTest(){
         TreeNode root = new TreeNode(4);         //          4
         root.left = new TreeNode(7);             //      7       9
@@ -1406,14 +1435,16 @@ public class Facebook {
 
 //Tree
 
+
 //#1 InorderTravelTree and GetNextNode
 // Facebook remote interviewer by zhouhui at 8/18/2017, 12PM CTS.
 // 1. create inorder travel in a given binary tree.
 // 2. create function to TreeNode* = getNextNode(TreeNode* root)
-    //(a) Inorder (Left, Root, Right) : 4 2 5 1 3
-//(b) Preorder (Root, Left, Right) : 1 2 4 5 3
-//(c) Postorder (Left, Right, Root) : 4 5 2 3 1
-// Breadth First or Level Order Traversal : 1 2 3 4 5
+//  (a) Inorder (Left, Root, Right) : 4 2 5 1 3
+//  (b) Preorder (Root, Left, Right) : 1 2 4 5 3
+//  (c) Postorder (Left, Right, Root) : 4 5 2 3 1
+//  Breadth First or Level Order Traversal : 1 2 3 4 5
+//             1
 //		     /   \
 //         2       3
 //        / \
@@ -1432,27 +1463,90 @@ public class Facebook {
             key = i;
         }
 
+        TreeNode getInorderNext(){
+            //left, nood, right
+            if(left!=null) 
+                left.getInorderNext();
+            System.out.println(key);
+            if(right!=null)
+                right.getInorderNext();
+            return this;
+        }
+
+        TreeNode getPreorderNext(){
+            //nood, left, right
+            System.out.println(key);
+            if(left!=null)
+                left.getPreorderNext();
+            if(right!=null)
+                right.getPreorderNext();
+            return this;
+        }
+
+        TreeNode getPostorderNext(){
+            //left, right, nood
+            if(left!=null)
+                left.getPostorderNext();
+            if(right!=null)
+                right.getPostorderNext();
+            System.out.println(key);
+            return this;
+        }
+
+        TreeNode  getLeaveorderNext(LinkedList<TreeNode> list){
+            //noods
+            if(list.size()==0)
+                return this;
+            LinkedList<TreeNode> nodelist = new LinkedList<TreeNode>(); 
+            for(TreeNode node : list){
+                System.out.println(node.key);                
+                if(node.left!=null)
+                    nodelist.add(node.left);
+                if(node.right!=null)
+                    nodelist.add(node.right);
+            }
+            getLeaveorderNext(nodelist);
+            return this;
+        }
     }
 
     static void treeIndorderTravelofBSTTest(){
+        
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);
         root.right = new TreeNode(3);
         root.left.left = new TreeNode(4);
         root.left.right = new TreeNode(5);
-        LinkedList<TreeNode> list = new LinkedList<>();
-        list.add(root);
-        travel_Inorder_of_BST(list);
-        TreeNode nextNode = getNextNode(root.left);
+        travel_Inorder_of_BST(root);
+        travel_Preorder_of_BST(root);
+        travel_Postorder_of_BST(root);
+        travel_Leaveorder_of_BST(root);        
         return;
     }
 
-    static TreeNode getNextNode(TreeNode node){
-        if(node!=null)  //current node
-            return node.right;   //Inoder: node.lert->node->node.right
-        return null;
-    };
+    static void travel_Inorder_of_BST(TreeNode root){
+        System.out.println("travel_Inorder_of_BST");
+        root.getInorderNext();
+    }
 
+    static void travel_Preorder_of_BST(TreeNode root){
+        System.out.println("travel_Preorder_of_BST");
+        root.getPreorderNext();
+    }
+
+    static void travel_Postorder_of_BST(TreeNode root){
+        System.out.println("travel_Postorder_of_BST");
+        root.getPostorderNext();        
+    }
+
+    static void travel_Leaveorder_of_BST(TreeNode root){
+        System.out.println("travel_Leaveorder_of_BST");
+        LinkedList<TreeNode> list = new LinkedList<>();
+        list.add(root);
+        root.getLeaveorderNext(list);        
+    }
+
+///////////////////////////////////////////////////////////
     //youtube foacebook interview question
 
     static void findLongestSubarrayBySumTest(){
@@ -1641,39 +1735,35 @@ public class Facebook {
 
     //5/10/2021 Facebook interview.
     //1. Get Binary Search Tree max summary of leaves.
+
     static void get_binary_search_tree_max_summary_of_leaves_test(){
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(5);
         root.left.right = new TreeNode(3);
         root.right = new TreeNode(7);      //max sum in leave 2 => 5+7 =12
-        int max = get_binary_search_tree_max_summary_of_leaves(root);
-        System.out.println(max);
-    }
-    static List<TreeNode> travelGivenLeaveofTree(List<TreeNode> list){
-        List<TreeNode> list1 = new ArrayList<>();
-        for(TreeNode node : list){
-            if(node.left!=null)
-                list1.add(node.left);
-            if(node.right!=null)
-                list1.add(node.right);
-        }
-        return list1;
-    }
-
-    static int get_binary_search_tree_max_summary_of_leaves(TreeNode root){
-        int maxSum = Integer.MIN_VALUE;
+        
         List<TreeNode> list = new ArrayList<>();
         list.add(root);
-        while(list.size()>0){
-            int sum = 0;
-            for(TreeNode node : list){
-                sum = sum + node.key;
-            }
-            if(sum>maxSum)
-                maxSum = sum;
-            list = travelGivenLeaveofTree(list);
+        int max = travelGivenLeaveofTree(list);
+        System.out.println(max);
+    }
+    static int travelGivenLeaveofTree(List<TreeNode> list){                
+        int sum = 0;
+        int nextLeaveSum = 0;
+        List<TreeNode> nodelist = new ArrayList<>();        
+        for(int index = 0; index <list.size(); index++){
+            TreeNode node = list.get(index);
+            sum = sum + node.key;
+            if(node.left!=null)
+                nodelist.add(node.left);            
+            if(node.right!=null)
+                nodelist.add(node.right);
         }
-        return maxSum;
+        if(nodelist.size()!=0){
+            nextLeaveSum = travelGivenLeaveofTree(nodelist);
+        }
+        sum = Math.max(sum, nextLeaveSum);
+        return sum;
     }
 
     //2. Check words if sorted as char array.

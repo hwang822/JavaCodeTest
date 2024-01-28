@@ -765,13 +765,12 @@ System.out.printf("\n14. Miscellaneous");
 
 //Amazon interview 2nd round  6/15/2021
 
-        Amazon.getListofLoginTest();
 
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 //Other interview codes test.
         //indeed using karat.
         //Amazon.tradeStreamTest();
-        Amazon.findRectangleTest();
+        //Amazon.findRectangleTest();
 
 
 
