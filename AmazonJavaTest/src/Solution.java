@@ -110,6 +110,8 @@ Recursion： 递归，设方程初始输入值， 再调用方程输入递减至
 public class Solution { // total 50 solved
     public static void main(String[] args) throws IOException {
 
+        Facebook.findBuySellStockPrices_test();
+
 //HackerRank codes
 //https://www.hackerrank.com/interview/interview-preparation-kit
 
@@ -768,7 +770,7 @@ System.out.printf("\n14. Miscellaneous");
         //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
 //Other interview codes test.
         //indeed using karat.
-        Amazon.tradeStreamTest();
+        //Amazon.tradeStreamTest();
         Amazon.findRectangleTest();
 
 
