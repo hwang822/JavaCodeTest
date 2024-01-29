@@ -44,12 +44,12 @@ public class HackerRank {
 
         String s = "UDDDUDUU";
         int n = 8;
-        int r = HackerRank.countingValleys(n, s);
+        int r = HackerRank.countingValleys(n, s);  //r = 2
         System.out.printf("r=%s n=%s s=%s, \n", r, n, s);
 
         s = "DDUUDDUDUUUD";
         n = 12;
-        r = countingValleys(n, s);
+        r = countingValleys(n, s); // r = 3
         System.out.printf("r=%s n=%s s=%s,  \n", r, n, s);
 
     }
@@ -57,25 +57,13 @@ public class HackerRank {
 
     // Complete the countingValleys function below.
     static int countingValleys(int n, String s) {
-        int iValleys = 0;
-        int iSs = 0;
-        boolean bV = false;
-        for (int i = 0; i < n; i++) {
-            char ud = s.charAt(i);
-            if (ud == 'U')
-                iSs++;
-            else
-                iSs--;
-
-            if (iSs > 0)
-                bV = false;
-            else if (iSs < 0)
-                bV = true;
-            if ((iSs == 0) && (bV == true))
-                iValleys++;
+        char[] ud = s.toCharArray();
+        int count = 0;
+        for(int index = 1; index < ud.length; index++) {
+            if((ud[index-1] == 'D')&&(ud[index] == 'U'))
+                count++;
         }
-        return iValleys;
-
+        return count;
     }
 
     //https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem?h_l=interview&playlist_slugs%5B%5D=interview-preparation-kit&playlist_slugs%5B%5D=warmup
@@ -141,7 +129,6 @@ public class HackerRank {
         long index = n % s.length();
         long count1 = s.substring(0, (int) index).length() - s.substring(0, (int) index).replace("a", "").length();
         return count * (n / s.length()) + count1;
-
     }
 
     //https://www.hackerrank.com/interview/interview-preparation-kit/arrays/challenges
