@@ -1,17 +1,5 @@
-import java.applet.*;
-import java.awt.*;
-import java.beans.*;
 import java.io.*;
 import java.lang.*;
-import java.math.*;
-import java.nio.*;
-import java.security.*;
-import java.rmi.*;
-import java.sql.*;
-import java.text.*;
-import java.util.*;
-import java.time.*;
-import java.net.*;
 
 /*
 数据和操作内型：
@@ -106,10 +94,8 @@ Recursion： 递归，设方程初始输入值， 再调用方程输入递减至
 
  */
 
-
 public class Solution { // total 50 solved
     public static void main(String[] args) throws IOException {
-    Facebook.mismatchesTest();
 //        Facebook.findBuySellStockPrices_test();
 
 //HackerRank codes
@@ -787,7 +773,7 @@ System.out.printf("\n14. Miscellaneous");
             //2: Merge overlapping intervals
             Facebook.merge_overlapping_intervals_test(); //good
             //21. Rotate a matrix (arrays)
-            Facebook.rotate_a_matrix_test(); //good
+            //Facebook.rotate_a_matrix_test(); //good
             //32. Find all unique triplets in an array, giving sum of zero (array)
             Facebook.find_all_unique_triplets_in_an_array_test();  //good,    //sort array, then compare sub range
             //35. Write a function to compute intersection of arrays (sort/search)
@@ -795,22 +781,16 @@ System.out.printf("\n14. Miscellaneous");
             // 38. Group anagrams together in an array of strings (arrays/strings)
             Facebook.group_anagrams_together_in_an_array_of_strings_test();   //convert each string to sorted chrs string as map key ot group same key strings.
 
-
-            Facebook.sortedArraySquaresTest();  //good
-            Facebook.findLongestSubarrayBySumTest();  //good
-            Facebook.canPartitionTest();
-            Facebook.findTwoNumbersSumInArrayEqualTargetValueTest(); //good
-
             //linked lists
             //3. Add two array integers
             Facebook.add_two_integers_test();  //good
             //4. Merge two sorted linked lists
-            Facebook.merge_two_sorted_linked_lists();  //good
+            Facebook.merge_two_sorted_linked_lists_test();  //good
             //18. Add two numbers as a list (lists)
             Facebook.add_two_numbers_as_a_list_test(); //good, same Facebook.add_two_integers_test();
             Facebook.addTwoLinksTest();  //good, same Facebook.add_two_integers_test();
 
-            //trees
+                    //trees
             //5. Convert binary tree to doubly linked
             Facebook.Convert_binary_tree_to_doubly_linked_test();   //good, first trave intern order to list. then trave list to create couble linked list.
             //6. Trees: Level order traversal of binary tree
@@ -860,7 +840,7 @@ System.out.printf("\n14. Miscellaneous");
             Facebook.find_the_square_root_of_an_integer_using_binary_search_test(); //good
 
             //11 Backtracking: Find all possible subsets
-            Facebook.get_all_subsets_test(); //not good
+            //Facebook.get_all_subsets_test(); //not good
 
             //Graphs
             //12 Clone a directed graph
@@ -893,6 +873,10 @@ System.out.printf("\n14. Miscellaneous");
             //36. Design a typehead feature (system design)
             //37. Design Facebook Messenger (system design)
         ////////////////////////////
+            Facebook.sortedArraySquaresTest();  //good
+            Facebook.findLongestSubarrayBySumTest();  //good
+            Facebook.canPartitionTest();
+            Facebook.findTwoNumbersSumInArrayEqualTargetValueTest(); //good
 
         //5/10/2021 Facebook interview.
 
@@ -902,7 +886,19 @@ System.out.printf("\n14. Miscellaneous");
             //2. Check words if sorted as char array.
             // String[] words = {"Check", "words", "if", "sorted"};
             // char[] alph = {'c', 'w', 'i', 's'}
-            Facebook.check_words_if_sorted_as_char_array_test();
+            Facebook.check_words_if_sorted_as_char_array_Test();
+
+        // other questions
+        Facebook.interview_mock_test();
+        Facebook.check_words_if_sorted_as_char_array_Test();
+        Facebook.mismatchesTest();
+        Facebook.findTwoNumbersSumInArrayEqualTargetValueTest();
+        Facebook.addTwoLinksTest();
+        Facebook.canPartitionTest();
+        Facebook.findLongestSubarrayBySumTest();
+        //Facebook.binary_tree_travel_function_test();
+        Facebook.using_parrern_to_check_strings_test();
+
 
     }
 }
